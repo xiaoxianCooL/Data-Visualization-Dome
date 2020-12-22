@@ -11,7 +11,7 @@
             alt=""
             srcset=""
           />
-          <span class="titleText">测试网服务站大数据监控平台</span>
+          <span class="titleText">测试网服务站大数据监控平台test</span>
         </div>
         <!-- 左侧区域 -->
         <div class="header-data-con"></div>
