@@ -1,0 +1,13 @@
+/* 公共样式表 */
+html{
+    height: 100%;
+}
+body{
+    height: 100%;
+}
+.box-flex{
+    display: flex;
+}
+*{
+    box-sizing: border-box;
+}
