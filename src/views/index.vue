@@ -84,8 +84,6 @@ export default {
     //这里存放数据
     return {
       pageScale: 1, //默认比例1
-      deviceUnlineNum: "12",
-      deviceUnlineChangeNum: "88",
     };
   },
   //监听属性 类似于data概念
