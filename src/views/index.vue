@@ -1,7 +1,11 @@
 <!-- 首页 -->
 <template>
   <div class="map">
-    <div class="map-page-con"  id="map-page-con"  :style="{ transform: `scale(${pageScale})` }" >
+    <div
+      class="map-page-con"
+      id="map-page-con"
+      :style="{ transform: `scale(${pageScale})` }"
+    >
       <div class="header">
         <!-- 中间logo标题 -->
         <div class="header-title-con">
@@ -48,7 +52,10 @@
           <div class="main-item-center-top">
             <div class="main-item-center-top-total">总门店数量</div>
             <div class="">
-<FlipClock :defaultNum="deviceUnlineNum" :changeNum="deviceUnlineChangeNum"/>
+              <FlipClock
+                :defaultNum="deviceUnlineNum"
+                :changeNum="deviceUnlineChangeNum"
+              />
             </div>
           </div>
           <div class="main-item-center-map"></div>
@@ -76,9 +83,9 @@ export default {
   data() {
     //这里存放数据
     return {
-      pageScale: 1,//默认比例1
-      deviceUnlineNum:"12",
-      deviceUnlineChangeNum:"88",
+      pageScale: 1, //默认比例1
+      deviceUnlineNum: "12",
+      deviceUnlineChangeNum: "88",
     };
   },
   //监听属性 类似于data概念
@@ -220,12 +227,12 @@ export default {
         height: 200px;
         background-size: 100% 100%;
       }
-      .main-item-left-middle{
+      .main-item-left-middle {
         background: url("../assets/image/中框.png") no-repeat;
         height: 308px;
         background-size: 100% 100%;
       }
-      .main-item-left-max{
+      .main-item-left-max {
         background: url("../assets/image/大框.png") no-repeat;
         height: 412px;
         background-size: 100% 100%;
@@ -238,21 +245,22 @@ export default {
       height: 100%;
       margin-right: 20px;
       background-color: cornflowerblue;
-      .main-item-center-top{
+      .main-item-center-top {
         height: 90px;
-    margin-bottom: 25px;
-    text-align: center;
-        .main-item-center-top-total{
-    font-size: 20px;
-    line-height: 20px;
-    color: #fff;
-    margin-bottom: 12px;
+        margin-bottom: 25px;
+        text-align: center;
+        .main-item-center-top-total {
+          font-size: 20px;
+          line-height: 20px;
+          color: #fff;
+          margin-bottom: 12px;
         }
       }
-      .main-item-center-map{//地图样式
-        
-      }
-      .main-item-center-botton{
+      // .main-item-center-map {
+        //地图样式
+
+      // }
+      .main-item-center-botton {
         background: url("../assets/image/中间框.png") no-repeat;
         height: 150px;
         background-size: 100% 100%;
@@ -268,12 +276,12 @@ export default {
         height: 200px;
         background-size: 100% 100%;
       }
-      .main-item-right-middle{
+      .main-item-right-middle {
         background: url("../assets/image/中框.png") no-repeat;
         height: 308px;
         background-size: 100% 100%;
       }
-      .main-item-right-max{
+      .main-item-right-max {
         background: url("../assets/image/大框.png") no-repeat;
         height: 412px;
         background-size: 100% 100%;
