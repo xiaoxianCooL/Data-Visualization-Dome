@@ -1,8 +1,8 @@
 
 <template>
   <div class="FlipClock">
-    <Flipper ref="flipperHour1" />
-    <Flipper ref="flipperHour2" />
+    <!-- <Flipper ref="flipperHour1" />
+    <Flipper ref="flipperHour2" /> -->
     <!-- <em>,</em> -->
     <Flipper ref="flipperMinute1" />
     <Flipper ref="flipperMinute2" />
@@ -37,8 +37,8 @@ export default {
   watch: {
     changeNum(val) {
       this.flipObjs = [
-        this.$refs.flipperHour1,
-        this.$refs.flipperHour2,
+        // this.$refs.flipperHour1,
+        // this.$refs.flipperHour2,
         this.$refs.flipperMinute1,
         this.$refs.flipperMinute2,
         this.$refs.flipperMinute3
@@ -56,6 +56,8 @@ export default {
     // 初始化数字
     init() {
       let nowTimeStr = this.defaultNum;
+      console.log(this.defaultNum);
+      // debugger
       for (let i = 0; i < this.flipObjs.length; i++) {
         this.flipObjs[i].setFront(nowTimeStr[i]);
       }
@@ -75,7 +77,9 @@ export default {
 
 
   },
-  mounted() {}
+  mounted() {
+    console.log(this.defaultNum);
+  }
 };
 </script>
 

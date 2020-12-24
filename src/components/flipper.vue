@@ -82,7 +82,7 @@ export default {
 </script>
 
 <style scoped>
-/* .M-Flipper {
+.M-Flipper {
   display: inline-block;
   position: relative;
   width: 26px;
@@ -125,10 +125,10 @@ export default {
   top: 50%;
   bottom: 0;
   line-height: 0;
-} */
+}
 
 /*向下翻*/
-/* .M-Flipper.down .front:before {
+.M-Flipper.down .front:before {
   z-index: 3;
 }
 
@@ -152,10 +152,10 @@ export default {
 
 .M-Flipper.down.go .back:after {
   animation: backFlipDown 0.6s ease-in-out both;
-} */
+}
 
 /*向上翻*/
-/* .M-Flipper.up .front:after {
+.M-Flipper.up .front:after {
   z-index: 3;
 }
 
@@ -269,6 +269,6 @@ export default {
 .M-Flipper .number9:before,
 .M-Flipper .number9:after {
   content: '9';
-} */
+}
 </style>
 

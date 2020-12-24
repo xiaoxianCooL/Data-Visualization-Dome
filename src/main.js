@@ -16,6 +16,8 @@ Vue.prototype.$http = $http;
 
 import echarts from 'echarts'//全局引用echar
 Vue.prototype.$echarts = echarts
+import china from 'echarts/map/json/china.json'
+echarts.registerMap('china', china)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
