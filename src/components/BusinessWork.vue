@@ -1,0 +1,343 @@
+<template>
+  <div class="business_work">
+    <div class="trend">
+      <!-- <div class="trend_title"><i class="content-icon"></i>业务趋势</div> -->
+      <div class="trend_content">
+        <div
+          class="trend_line"
+          ref="trendLine"
+          style="width: 100%; height: 161px"
+        ></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import echarts from "echarts";
+// import CGI from "../utils/CGI";
+import echartsLiquidfill from "echarts-liquidfill";
+
+export default {
+  data() {
+    return {
+      ClueOrderList: {},
+      ClueConditionList: {}, // 饼状图数据
+      clueNumberList: [],
+      orderNumberList: [],
+      monthList: [],
+      intentionRatio: {}, // 意向百分比
+    };
+  },
+
+  methods: {
+    getLast6Month() {
+      //创建现在的时间
+      var data = new Date();
+      //获取年
+      var year = data.getFullYear();
+      //获取月
+      var mon = data.getMonth() + 1;
+      var arry = new Array();
+      for (var i = 0; i < 5; i++) {
+        mon = mon - 1;
+        if (mon <= 0) {
+          year = year - 1;
+          mon = mon + 12;
+        }
+        if (mon < 10) {
+          mon = "0" + mon;
+        }
+
+        arry[i] = year + "/" + mon;
+      }
+      return arry;
+    },
+    // 返回最近months个月的日期
+    getLast3Month(months) {
+      var now = new Date();
+      var year = now.getFullYear();
+      var month = now.getMonth() + 1; //0-11表示1-12月
+      var day = now.getDate();
+      var dateObj = {};
+      dateObj.now = year + "-" + month + "-" + day;
+      var nowMonthDay = new Date(year, month, 0).getDate(); //当前月的总天数
+      if (month - months <= 0) {
+        //如果是1、2、3月，年数往前推一年
+        var last3MonthDay = new Date(
+          year - 1,
+          12 - (months - parseInt(month)),
+          0
+        ).getDate(); //3个月前所在月的总天数
+        if (last3MonthDay < day) {
+          //3个月前所在月的总天数小于现在的天日期
+          dateObj.last =
+            year - 1 + "-" + (12 - (months - month)) + "-" + last3MonthDay;
+        } else {
+          dateObj.last = year - 1 + "-" + (12 - (months - month)) + "-" + day;
+        }
+      } else {
+        var last3MonthDay = new Date(
+          year,
+          parseInt(month) - months,
+          0
+        ).getDate(); //3个月前所在月的总天数
+        if (last3MonthDay < day) {
+          //3个月前所在月的总天数小于现在的天日期
+          if (day < nowMonthDay) {
+            //当前天日期小于当前月总天数,2月份比较特殊的月份
+            dateObj.last =
+              year +
+              "-" +
+              (month - months) +
+              "-" +
+              (last3MonthDay - (nowMonthDay - day));
+          } else {
+            dateObj.last = year + "-" + (month - months) + "-" + last3MonthDay;
+          }
+        } else {
+          dateObj.last = year + "-" + (month - months) + "-" + day;
+        }
+      }
+      return dateObj;
+    },
+    initTrendLine() {
+      const myChart = echarts.init(this.$refs.trendLine);
+      myChart.setOption({
+        grid: {
+          left: "15px",
+          right: "12px",
+          top: "20px",
+          bottom: "4px",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "category",
+          data: this.monthList,
+          axisLine: {
+            //  改变x轴颜色
+            lineStyle: {
+              color: "#464754",
+            },
+          },
+          boundaryGap: true,
+
+          axisLabel: {
+            //  改变x轴字体颜色和大小
+            textStyle: {
+              color: "#BBCDD7",
+              fontSize: 12,
+            },
+          },
+
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: ["#315070"],
+              width: 1,
+              type: "solid",
+            },
+          },
+        },
+        yAxis: {
+          type: "value",
+          axisLine: {
+            //  改变y轴颜色
+            show: false,
+            lineStyle: {
+              color: "#26D9FF",
+            },
+          },
+
+          axisLabel: {
+            margin: 15,
+            textStyle: {
+              color: "#BBCDD7",
+              fontSize: 16,
+            },
+          },
+          minInterval: 5,
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: ["#315070"],
+              width: 1,
+              type: "solid",
+            },
+          },
+        },
+        series: [
+          {
+            name: "线索",
+            type: "line",
+            smooth: true,
+            symbol: "circle",
+            symbolSize: 8,
+
+            itemStyle: {
+              normal: {
+                color: "#327ae6",
+                lineStyle: {
+                  color: "#327ae6",
+                  width: 2,
+                },
+                areaStyle: {
+                  // 颜色自上而下渐变
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      // 1代表上面
+                      offset: 0,
+                      color: "#327ae6",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(6,14,33,1)",
+                    },
+                  ]),
+                  opacity: 0.2, // 填充区域透明度
+                },
+                borderWidth: 1,
+                borderColor: "#327ae6",
+              },
+            },
+            data: this.clueNumberList,
+          },
+          {
+            name: "订单量",
+            type: "line",
+            smooth: true,
+            symbol: "circle",
+            symbolSize: 8,
+
+            itemStyle: {
+              normal: {
+                color: "#29f7f7",
+                lineStyle: {
+                  color: "#01cbdd",
+                  width: 2,
+                },
+                areaStyle: {
+                  // 颜色自上而下渐变
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                      // 1代表上面
+                      offset: 0,
+                      color: "#29f7f7",
+                    },
+                    {
+                      offset: 1,
+                      color: "rgba(6,14,33,1)",
+                    },
+                  ]),
+                  opacity: 0.2, // 填充区域透明度
+                },
+              },
+            },
+            data: this.orderNumberList,
+          },
+        ],
+      });
+    },
+
+    getClueTrend() {
+      console.log(this.getLast3Month(5).last);
+      console.log(this.getLast3Month(5).now);
+
+      // this.$http.post(CGI.ClueTrend, {
+      //     beginTime: this.getLast3Month(5).last,
+      //     endTime: this.getLast3Month(5).now,
+      //   }).then((res) => {
+      let res = new Object();
+      res.model = [
+        {
+          clueNumber: 9,
+          month: "1月",
+          orderNumber: 1,
+        },
+        {
+          clueNumber: 10,
+          month: "2月",
+          orderNumber: 2,
+        },
+        {
+          clueNumber: 10,
+          month: "3月",
+          orderNumber: 2,
+        },
+        {
+          clueNumber: 15,
+          month: "4月",
+          orderNumber: 6,
+        },
+        {
+          clueNumber: 4,
+          month: "5月",
+          orderNumber: 2,
+        },
+        {
+          clueNumber: 7,
+          month: "6月",
+          orderNumber: 13,
+        },
+        {
+          clueNumber: 10,
+          month: "7月",
+          orderNumber: 3,
+        },
+        {
+          clueNumber: 3,
+          month: "8月",
+          orderNumber: 15,
+        },
+      ];
+      this.clueNumberList = res.model.map((i) => {
+        return i.clueNumber;
+      });
+      this.orderNumberList = res.model.map((i) => {
+        return i.orderNumber;
+      });
+      this.monthList = res.model.map((i) => {
+        return i.month;
+      });
+      this.initTrendLine();
+      //   });
+    },
+  },
+
+  mounted() {
+    // this.getClueOrder();
+    // this.getClueCondition();
+    this.getClueTrend();
+  },
+};
+</script>
+
+<style scoped lang="less">
+.business_work {
+  // .content-icon {
+  //   width: 0.6em;
+  //   height: 0.5em;
+  //   background: url("~@/assets/city/title-mini.png") no-repeat;
+  //   background-size: 100% 100%;
+  //   margin-right: 0.5em;
+  //   display: inline-block;
+  //   vertical-align: middle;
+  // }
+  .trend {
+    margin-top: 16px;
+    .trend_title {
+      font-size: 16px;
+      line-height: 16px;
+      color: #b8cdd9;
+    }
+    .trend_content {
+      margin-top: 15px;
+      // background-color: rgba($color: #0a0a0d, $alpha: 0.72);
+      background-color: rgba(10, 10, 13, 0.72);
+    }
+  }
+}
+</style>

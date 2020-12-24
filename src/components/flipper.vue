@@ -88,8 +88,9 @@ export default {
   width: 26px;
   height: 38px;
   line-height: 38px;
-  font-size: 26px;
-  color: #fff;
+  font-size: 36px;
+  color: #000;
+  font-weight: 700;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
   text-align: center;
   font-family: 'Helvetica Neue';

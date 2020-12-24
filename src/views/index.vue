@@ -44,9 +44,18 @@
       </div>
       <div class="main">
         <div class="main-item-left">
-          <div class="main-box main-item-left-min"></div>
-          <div class="main-box main-item-left-middle"></div>
-          <div class="main-box main-item-left-max"></div>
+          <div class="main-box main-item-left-min">
+            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>线上线下订单量概览</span></div>
+            <div>
+              <BusinessWork />
+            </div>
+          </div>
+          <div class="main-box main-item-left-middle">
+            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>回收品类分析</span></div>
+          </div>
+          <div class="main-box main-item-left-max">
+            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>门店回收费用排行榜</span></div>
+          </div>
         </div>
         <div class="main-item-center">
           <div class="main-item-center-top">
@@ -59,12 +68,20 @@
             </div>
           </div>
           <div ref="chart" class="main-item-center-map" ></div>
-          <div class="main-item-center-botton"></div>
+          <div class="main-item-center-botton">
+            <div class="main-box main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>全国门店各项数据统计</span></div>
+          </div>
         </div>
         <div class="main-item-right">
-          <div class="main-box main-item-right-min"></div>
-          <div class="main-box main-item-right-middle"></div>
-          <div class="main-box main-item-right-max"></div>
+          <div class="main-box main-item-right-min">
+            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>用户数据统计</span></div>
+          </div>
+          <div class="main-box main-item-right-middle">
+            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>总单位趋势统计</span></div>
+          </div>
+          <div class="main-box main-item-right-max">
+            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>实时订单</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -75,10 +92,12 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 import FlipClock from '../components/flipClock'
+import BusinessWork from '../components/BusinessWork'
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
-    FlipClock
+    FlipClock,
+    BusinessWork
   },
   data() {
     //这里存放数据
@@ -545,7 +564,8 @@ export default {
     timeout(){
       let _this = this;
       setTimeout(function(){
-        _this.deviceUnlineChangeNum = "1";
+        _this.deviceUnlineNum = "000";
+        _this.deviceUnlineChangeNum = "839";
         // _this.deviceUnlineChangeNum = (Number(_this.deviceUnlineChangeNum)+1).toString();
         console.log(_this.deviceUnlineChangeNum);
       },1000)
@@ -554,13 +574,149 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     // let _this = this;
+    this.$http.get('https://restapi.amap.com/v3/weather/weatherInfo?city=440114&key=8d4730fb158ee7adef7c120d2cda7e8a',{
+
+    }).then(function(res){
+      const weatherData = res.data.lives[0];
+      // alert(res);
+      console.log(weatherData.weather);
+        switch (weatherData.weather) {
+            case '晴':
+              this.weatherIcon = 'icon-qing';
+              break;
+            case '多云':
+              this.weatherIcon = 'icon-duoyun';
+              break;
+            case '阴':
+              this.weatherIcon = 'icon-yin';
+              break;
+            case '阵雨':
+              this.weatherIcon = 'icon-zhenyu';
+              break;
+            case '雷阵雨':
+              this.weatherIcon = 'icon-leizhenyu';
+              break;
+            case '雷阵雨并伴有冰雹':
+              this.weatherIcon = 'icon-leizhenyubingbanyoubingbao';
+              break;
+            case '雨夹雪':
+              this.weatherIcon = 'icon-huaban';
+              break;
+            case '雨':
+              this.weatherIcon = 'icon-xiaoyu';
+              break;
+            case '小雨':
+              this.weatherIcon = 'icon-xiaoyu';
+              break;
+            case '中雨':
+              this.weatherIcon = 'icon-zhongyu';
+              break;
+            case '大雨':
+              this.weatherIcon = 'icon-dayu';
+              break;
+            case '暴雨':
+              this.weatherIcon = 'icon-dayu1';
+              break;
+            case '大暴雨':
+              this.weatherIcon = 'icon-baoyu';
+              break;
+            case '特大暴雨':
+              this.weatherIcon = 'icon-dtedabaoyu';
+              break;
+            case '阵雪':
+              this.weatherIcon = 'icon-zhenxue';
+              break;
+            case '雪':
+              this.weatherIcon = 'icon-xiaoxue';
+              break;
+            case '小雪':
+              this.weatherIcon = 'icon-xiaoxue';
+              break;
+            case '中雪':
+              this.weatherIcon = 'icon-zhongxue';
+              break;
+            case '大雪':
+              this.weatherIcon = 'icon-daxue';
+              break;
+            case '暴雪':
+              this.weatherIcon = 'icon-baoxue';
+              break;
+            case '雾':
+              this.weatherIcon = 'icon-wu';
+              break;
+            case '冻雨':
+              this.weatherIcon = 'icon-dongyu';
+              break;
+            case '沙尘暴':
+              this.weatherIcon = 'icon-w-20a';
+              break;
+            case '小雨-中雨':
+              this.weatherIcon = 'icon-xiaoyu-zhongyu';
+              break;
+            case '中雨-大雨':
+              this.weatherIcon = 'icon-zhongyu-dayu';
+              break;
+            case '大雨-暴雨':
+              this.weatherIcon = 'icon-dayu-baoyu';
+              break;
+            case '暴雨-大暴雨':
+              this.weatherIcon = 'icon-baoyu-dabaoyu';
+              break;
+            case '大暴雨-特大暴雨':
+              this.weatherIcon = 'icon-dabaoyu-tedabaoyu';
+              break;
+            case '小雪-中雪':
+              this.weatherIcon = 'icon-xiaoxue-zhongxue';
+              break;
+            case '中雪-大雪':
+              this.weatherIcon = 'icon-zhongxue-daxue';
+              break;
+            case '大雪-暴雪':
+              this.weatherIcon = 'icon-daxue-baoxue';
+              break;
+            case '浮尘':
+              this.weatherIcon = 'icon-fuchen';
+              break;
+            case '扬沙':
+              this.weatherIcon = 'icon-yangsha';
+              break;
+            case '强沙尘暴':
+              this.weatherIcon = 'icon-qiangshachenbao';
+              break;
+            case '飑':
+              this.weatherIcon = 'icon-biao';
+              break;
+            case '龙卷风':
+              this.weatherIcon = 'icon-huaban1';
+              break;
+            case '弱高吹雪':
+              this.weatherIcon = 'icon-tianqi-';
+              break;
+            case '轻雾':
+              this.weatherIcon = 'icon-qingwu';
+              break;
+            case '霾':
+              this.weatherIcon = 'icon-mai';
+              break;
+            default: {
+              this.weatherIcon = '';
+            }
+          }
+    }) .catch(function(err){
+      // alert(err);
+      console.log(err);
+    })
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    window.addEventListener("resize", this.handleResize);
-    this.getEchartData();
-    this.handleResize();
+    this.getEchartData();//初始化加载地图函数
     this.timeout();
+
+
+    
+    //绑定resize事件 监听浏览器是否缩小 触发自适应函数随着视图缩小计算比例
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();//视图自适应函数
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
@@ -585,7 +741,8 @@ export default {
 .map-page-con {
   position: relative;
   width: 1920px;
-  height: 1080px;
+  // height: 1080px;
+  height: 100vh;
   transform-origin: left top;
   overflow: auto;
   font-family: "SourceHanSansSc-Regular", "Helvetica Neue", Helvetica,
@@ -666,17 +823,17 @@ export default {
       // background-color: cornflowerblue;
       .main-item-left-min {
         background: url("../assets/image/小框.png") no-repeat;
-        height: 200px;
+        height: 220px;
         background-size: 100% 100%;
       }
       .main-item-left-middle {
         background: url("../assets/image/中框.png") no-repeat;
-        height: 308px;
+        height: 200px;
         background-size: 100% 100%;
       }
       .main-item-left-max {
         background: url("../assets/image/大框.png") no-repeat;
-        height: 412px;
+        height: 357px;
         background-size: 100% 100%;
       }
     }
@@ -689,7 +846,7 @@ export default {
       // background-color: cornflowerblue;
       .main-item-center-top {
         height: 50px;
-        margin-bottom: 25px;
+        // margin-bottom: 25px;
         text-align: center;
         .main-item-center-top-total {
           font-size: 20px;
@@ -701,10 +858,10 @@ export default {
       .main-item-center-map {
         // 地图样式
         width: 728px;
-        height: 600px;
+        height: 550px;
       }
       .main-item-center-botton {
-        margin-top: 115px;
+        margin-top: 46px;
         background: url("../assets/image/中间框.png") no-repeat;
         height: 150px;
         background-size: 100% 100%;
@@ -722,15 +879,31 @@ export default {
       }
       .main-item-right-middle {
         background: url("../assets/image/中框.png") no-repeat;
-        height: 308px;
+        height: 200px;
         background-size: 100% 100%;
       }
       .main-item-right-max {
         background: url("../assets/image/大框.png") no-repeat;
-        height: 412px;
+        height: 377px;
         background-size: 100% 100%;
       }
     }
+  }
+}
+
+.main-item-common-totalClass{
+  line-height: 16px;
+  img{
+    width: 16px;
+    height: auto;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  span{
+    font-size: 16px;
+    vertical-align: middle;
+    color: #fff;
+    letter-spacing: 2px;//字间距
   }
 }
 </style>
