@@ -44,13 +44,10 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
 
-<style scoped>
-.app{
-
-}
+<style lang="less">
 body {
   height: 100%;
-  background-color: #1e1e1e;
+  /* background-color: #1e1e1e; */
 }
 html {
   height: 100%;

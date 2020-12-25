@@ -15,7 +15,7 @@
             alt=""
             srcset=""
           />
-          <span class="titleText">测试网服务站大数据监控平台</span>
+          <span class="titleText">绿犀牛服务站大数据监控平台</span>
         </div>
         <!-- 左侧区域 -->
         <div class="header-data-con"></div>
@@ -23,13 +23,14 @@
         <div class="header-time-con">
           <div class="header-item">
             <!-- <span ></span> -->
-            <img
+            <!-- <img
               class="header-time-logo"
               src="../assets/image/图标-时间.png"
               alt=""
               srcset=""
-            />
-            <span class="header-span-text">晴3℃</span>
+            /> -->
+            <i class="iconfont" :class="weatherVariations"></i>
+            <span class="header-span-text">{{weatherType}}℃</span>
           </div>
           <div class="header-item">
             <img
@@ -38,23 +39,35 @@
               alt=""
               srcset=""
             />
-            <span class="header-span-text">11:29:48</span>
+            <span class="header-span-text">{{ timeClock.time }}</span>
           </div>
         </div>
       </div>
       <div class="main">
         <div class="main-item-left">
           <div class="main-box main-item-left-min">
-            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>线上线下订单量概览</span></div>
+            <div class="main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >线上线下订单量概览</span
+              >
+            </div>
             <div>
               <BusinessWork />
             </div>
           </div>
           <div class="main-box main-item-left-middle">
-            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>回收品类分析</span></div>
+            <div class="main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >回收品类分析</span
+              >
+            </div>
           </div>
           <div class="main-box main-item-left-max">
-            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>门店回收费用排行榜</span></div>
+            <div class="main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >门店回收费用排行榜</span
+              >
+            </div>
           </div>
         </div>
         <div class="main-item-center">
@@ -67,20 +80,36 @@
               />
             </div>
           </div>
-          <div ref="chart" class="main-item-center-map" ></div>
+          <div ref="chart" class="main-item-center-map"></div>
           <div class="main-item-center-botton">
-            <div class="main-box main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>全国门店各项数据统计</span></div>
+            <div class="main-box main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >全国门店各项数据统计</span
+              >
+            </div>
           </div>
         </div>
         <div class="main-item-right">
           <div class="main-box main-item-right-min">
-            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>用户数据统计</span></div>
+            <div class="main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >用户数据统计</span
+              >
+            </div>
           </div>
           <div class="main-box main-item-right-middle">
-            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>总单位趋势统计</span></div>
+            <div class="main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >总单位趋势统计</span
+              >
+            </div>
           </div>
           <div class="main-box main-item-right-max">
-            <div class="main-item-common-totalClass"><img src="../assets/image/标题前缀-1.png" alt="" srcset=""><span>实时订单</span></div>
+            <div class="main-item-common-totalClass">
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >实时订单</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -91,41 +120,49 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-import FlipClock from '../components/flipClock'
-import BusinessWork from '../components/BusinessWork'
+import FlipClock from "../components/flipClock";
+import BusinessWork from "../components/BusinessWork";
+import moment from "moment"; //时间插件
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
     FlipClock,
-    BusinessWork
+    BusinessWork,
   },
   data() {
     //这里存放数据
     return {
       pageScale: 1, //默认比例1
-      deviceUnlineNum:"1",
-      deviceUnlineChangeNum:"2",
-            //   infoData:[//地图数据
-            //   {
-            //     //城市经纬度 索引0为开始城市  索引1为结束城市
-            //     coords: [
-            //       [113.2531, 23.1516],
-            //       [116.4056, 39.9053],
-            //     ],
-            //     //飞线颜色 16进制格式
-            //     lineStyle: { color: "#4ab2e5" },
-            //     startProvince: "广东",
-            //     endProvince: "北京",
-            //     city: [
-            //       {
-            //         //市名
-            //         cityName:'一环',
-            //         //数量 (根据数量排序)
-            //         num:55
-            //       },
-            //     ],
-            //   },
-            // ]
+      deviceUnlineNum: "1",
+      deviceUnlineChangeNum: "2",
+      weatherType:"晴20",
+      weatherVariations: "icon-qing",
+      timeClock: {
+        time: "",
+        date: "",
+        week: "",
+      },
+      //   infoData:[//地图数据
+      //   {
+      //     //城市经纬度 索引0为开始城市  索引1为结束城市
+      //     coords: [
+      //       [113.2531, 23.1516],
+      //       [116.4056, 39.9053],
+      //     ],
+      //     //飞线颜色 16进制格式
+      //     lineStyle: { color: "#4ab2e5" },
+      //     startProvince: "广东",
+      //     endProvince: "北京",
+      //     city: [
+      //       {
+      //         //市名
+      //         cityName:'一环',
+      //         //数量 (根据数量排序)
+      //         num:55
+      //       },
+      //     ],
+      //   },
+      // ]
     };
   },
   //监听属性 类似于data概念
@@ -135,7 +172,7 @@ export default {
   //方法集合
   methods: {
     //地图配置
-        getEchartData() {
+    getEchartData() {
       const myChart = this.$echarts.init(this.$refs.chart);
       var points = [
         { value: [118.8062, 31.9208], itemStyle: { color: "#4ab2e5" } },
@@ -161,7 +198,7 @@ export default {
       var option = {
         // backgroundColor: "#181f4e",
         // backgroundColor: 'rgba(128, 128, 128, 0.1)', //rgba设置透明度0.1,
-        backgroundColor: '', //无背景,
+        backgroundColor: "", //无背景,
         /*   title: {
             top: 20,
             text: '“困难人数” - 杭州市',
@@ -177,28 +214,31 @@ export default {
           formatter: function (params) {
             //   console.log(params);
             if (params.componentSubType == "lines" && params.data) {
-                //               console.log(params);
-                // console.log(params.data.startProvince);
-                // console.log(params.data.endProvince);
-                // console.log(params.data.city);
-                // console.log(params.data.city[0].cityName);
-                // console.log(params.data.city[0].num);
-                // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].cityName+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].num;
-                return params.name;
-            }else if((params.componentSubType == "map"|| params.componentSubType == "effectScatter") && params.data){
-                // console.log(params);
-                // console.log(params.data.startProvince);
-                // console.log(params.data.endProvince);
-                // console.log(params.data.city);
-                // console.log(params.data.city[0].cityName);
-                // console.log(params.data.city[0].num);
-                return params.name;
-                // debugger
-                // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].cityName+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].num;
-            } else{
-                return params.name;
+              //               console.log(params);
+              // console.log(params.data.startProvince);
+              // console.log(params.data.endProvince);
+              // console.log(params.data.city);
+              // console.log(params.data.city[0].cityName);
+              // console.log(params.data.city[0].num);
+              // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].cityName+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].num;
+              return params.name;
+            } else if (
+              (params.componentSubType == "map" ||
+                params.componentSubType == "effectScatter") &&
+              params.data
+            ) {
+              // console.log(params);
+              // console.log(params.data.startProvince);
+              // console.log(params.data.endProvince);
+              // console.log(params.data.city);
+              // console.log(params.data.city[0].cityName);
+              // console.log(params.data.city[0].num);
+              return params.name;
+              // debugger
+              // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].cityName+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].num;
+            } else {
+              return params.name;
             }
-            
           },
         },
         /*visualMap: {
@@ -293,7 +333,7 @@ export default {
           ],
         },
         series: [
-            //地图
+          //地图
           {
             type: "map",
             roam: false,
@@ -406,8 +446,7 @@ export default {
                 curveness: 0.3, //尾迹线条曲直度
               },
             }, // this.infoData
-            data: 
-            [
+            data: [
               {
                 //城市经纬度 索引0为开始城市  索引1为结束城市
                 coords: [
@@ -425,126 +464,143 @@ export default {
                   },
                 ],
               },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [127.9688, 45.368],
-                  ],
-                  lineStyle: { color: "#4fb6d2" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [110.3467, 41.4899],
-                  ],
-                  lineStyle: { color: "#52b9c7" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [125.8154, 44.2584],
-                  ],
-                  lineStyle: { color: "#5abead" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [116.4551, 40.2539],
-                  ],
-                  lineStyle: { color: "#f34e2b" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [123.1238, 42.1216],
-                  ],
-                  lineStyle: { color: "#f56321" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [114.4995, 38.1006],
-                  ],
-                  lineStyle: { color: "#f56f1c" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [117.4219, 39.4189],
-                  ],
-                  lineStyle: { color: "#f58414" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [112.3352, 37.9413],
-                  ],
-                  lineStyle: { color: "#f58f0e" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [109.1162, 34.2004],
-                  ],
-                  lineStyle: { color: "#f5a305" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [103.5901, 36.3043],
-                  ],
-                  lineStyle: { color: "#e7ab0b" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [106.3586, 38.1775],
-                  ],
-                  lineStyle: { color: "#dfae10" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [101.4038, 36.8207],
-                  ],
-                  lineStyle: { color: "#d5b314" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [103.9526, 30.7617],
-                  ],
-                  lineStyle: { color: "#c1bb1f" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [108.384366, 30.439702],
-                  ],
-                  lineStyle: { color: "#b9be23" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [113.0823, 28.2568],
-                  ],
-                  lineStyle: { color: "#a6c62c" },
-                },
-                {
-                  coords: [
-                    [119.4543, 25.9222],
-                    [102.9199, 25.46639],
-                  ],
-                  lineStyle: { color: "#96cc34" },
-                },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [127.9688, 45.368],
+                ],
+                lineStyle: { color: "#4fb6d2" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [110.3467, 41.4899],
+                ],
+                lineStyle: { color: "#52b9c7" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [125.8154, 44.2584],
+                ],
+                lineStyle: { color: "#5abead" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [116.4551, 40.2539],
+                ],
+                lineStyle: { color: "#f34e2b" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [123.1238, 42.1216],
+                ],
+                lineStyle: { color: "#f56321" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [114.4995, 38.1006],
+                ],
+                lineStyle: { color: "#f56f1c" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [117.4219, 39.4189],
+                ],
+                lineStyle: { color: "#f58414" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [112.3352, 37.9413],
+                ],
+                lineStyle: { color: "#f58f0e" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [109.1162, 34.2004],
+                ],
+                lineStyle: { color: "#f5a305" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [103.5901, 36.3043],
+                ],
+                lineStyle: { color: "#e7ab0b" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [106.3586, 38.1775],
+                ],
+                lineStyle: { color: "#dfae10" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [101.4038, 36.8207],
+                ],
+                lineStyle: { color: "#d5b314" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [103.9526, 30.7617],
+                ],
+                lineStyle: { color: "#c1bb1f" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [108.384366, 30.439702],
+                ],
+                lineStyle: { color: "#b9be23" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [113.0823, 28.2568],
+                ],
+                lineStyle: { color: "#a6c62c" },
+              },
+              {
+                coords: [
+                  [119.4543, 25.9222],
+                  [102.9199, 25.46639],
+                ],
+                lineStyle: { color: "#96cc34" },
+              },
             ],
           },
         ],
       };
       myChart.setOption(option, true);
     },
+    //时间更新
+    updateTime() {
+      const nowMoment = moment();
+      const nowTime = nowMoment.format("HH:mm:ss");
+      this.$set(this.timeClock, "time", nowTime);
+      this.$set(this.timeClock, "date", nowMoment.format("YYYY-MM-DD"));
+      const weekArr = [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+      ];
+      this.$set(this.timeClock, "week", weekArr[nowMoment.day()]);
+    },
     //自适应函数
-    handleResize () {
+    handleResize() {
       const screenDom = document.getElementById("map-page-con");
       if (!screenDom) {
         return;
@@ -561,162 +617,236 @@ export default {
       this.pageScale = Math.min(scaleW, scaleH);
     },
     //测试函数
-    timeout(){
+    timeout() {
       let _this = this;
-      setTimeout(function(){
+      setTimeout(function () {
         _this.deviceUnlineNum = "000";
         _this.deviceUnlineChangeNum = "839";
         // _this.deviceUnlineChangeNum = (Number(_this.deviceUnlineChangeNum)+1).toString();
         console.log(_this.deviceUnlineChangeNum);
-      },1000)
-    }
+      }, 1000);
+    },
   },
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {
     // let _this = this;
-    this.$http.get('https://restapi.amap.com/v3/weather/weatherInfo?city=440114&key=8d4730fb158ee7adef7c120d2cda7e8a',{
-
-    }).then(function(res){
-      const weatherData = res.data.lives[0];
-      // alert(res);
-      console.log(weatherData.weather);
+    this.$http.get(
+        "https://restapi.amap.com/v3/weather/weatherInfo?city=440114&key=8d4730fb158ee7adef7c120d2cda7e8a",
+        {}
+      ).then( (res)=> {
+        const weatherData = res.data.lives[0];
+        console.log(weatherData.weather);
+        console.log(weatherData.temperature);
+        this.weatherType = `${weatherData.weather} ${weatherData.temperature}`;
         switch (weatherData.weather) {
-            case '晴':
-              this.weatherIcon = 'icon-qing';
-              break;
-            case '多云':
-              this.weatherIcon = 'icon-duoyun';
-              break;
-            case '阴':
-              this.weatherIcon = 'icon-yin';
-              break;
-            case '阵雨':
-              this.weatherIcon = 'icon-zhenyu';
-              break;
-            case '雷阵雨':
-              this.weatherIcon = 'icon-leizhenyu';
-              break;
-            case '雷阵雨并伴有冰雹':
-              this.weatherIcon = 'icon-leizhenyubingbanyoubingbao';
-              break;
-            case '雨夹雪':
-              this.weatherIcon = 'icon-huaban';
-              break;
-            case '雨':
-              this.weatherIcon = 'icon-xiaoyu';
-              break;
-            case '小雨':
-              this.weatherIcon = 'icon-xiaoyu';
-              break;
-            case '中雨':
-              this.weatherIcon = 'icon-zhongyu';
-              break;
-            case '大雨':
-              this.weatherIcon = 'icon-dayu';
-              break;
-            case '暴雨':
-              this.weatherIcon = 'icon-dayu1';
-              break;
-            case '大暴雨':
-              this.weatherIcon = 'icon-baoyu';
-              break;
-            case '特大暴雨':
-              this.weatherIcon = 'icon-dtedabaoyu';
-              break;
-            case '阵雪':
-              this.weatherIcon = 'icon-zhenxue';
-              break;
-            case '雪':
-              this.weatherIcon = 'icon-xiaoxue';
-              break;
-            case '小雪':
-              this.weatherIcon = 'icon-xiaoxue';
-              break;
-            case '中雪':
-              this.weatherIcon = 'icon-zhongxue';
-              break;
-            case '大雪':
-              this.weatherIcon = 'icon-daxue';
-              break;
-            case '暴雪':
-              this.weatherIcon = 'icon-baoxue';
-              break;
-            case '雾':
-              this.weatherIcon = 'icon-wu';
-              break;
-            case '冻雨':
-              this.weatherIcon = 'icon-dongyu';
-              break;
-            case '沙尘暴':
-              this.weatherIcon = 'icon-w-20a';
-              break;
-            case '小雨-中雨':
-              this.weatherIcon = 'icon-xiaoyu-zhongyu';
-              break;
-            case '中雨-大雨':
-              this.weatherIcon = 'icon-zhongyu-dayu';
-              break;
-            case '大雨-暴雨':
-              this.weatherIcon = 'icon-dayu-baoyu';
-              break;
-            case '暴雨-大暴雨':
-              this.weatherIcon = 'icon-baoyu-dabaoyu';
-              break;
-            case '大暴雨-特大暴雨':
-              this.weatherIcon = 'icon-dabaoyu-tedabaoyu';
-              break;
-            case '小雪-中雪':
-              this.weatherIcon = 'icon-xiaoxue-zhongxue';
-              break;
-            case '中雪-大雪':
-              this.weatherIcon = 'icon-zhongxue-daxue';
-              break;
-            case '大雪-暴雪':
-              this.weatherIcon = 'icon-daxue-baoxue';
-              break;
-            case '浮尘':
-              this.weatherIcon = 'icon-fuchen';
-              break;
-            case '扬沙':
-              this.weatherIcon = 'icon-yangsha';
-              break;
-            case '强沙尘暴':
-              this.weatherIcon = 'icon-qiangshachenbao';
-              break;
-            case '飑':
-              this.weatherIcon = 'icon-biao';
-              break;
-            case '龙卷风':
-              this.weatherIcon = 'icon-huaban1';
-              break;
-            case '弱高吹雪':
-              this.weatherIcon = 'icon-tianqi-';
-              break;
-            case '轻雾':
-              this.weatherIcon = 'icon-qingwu';
-              break;
-            case '霾':
-              this.weatherIcon = 'icon-mai';
-              break;
-            default: {
-              this.weatherIcon = '';
-            }
+          case "晴":
+            this.weatherVariations = "icon-qing";
+            break;
+          case "少云":
+            this.weatherVariations = "icon-shaoyun";
+            break;
+          case "晴间多云":
+            this.weatherVariations = "icon-qingjianduoyun";
+            break;
+          case "多云":
+            this.weatherVariations = "icon-duoyun";
+            break;
+          case "阴":
+            this.weatherVariations = "icon-tq-104";
+            break;
+          case "有风":
+            this.weatherVariations = "icon-tianqizitiku06";
+            break;
+          case "平静":
+            this.weatherVariations = "icon-pingjing";
+            break;
+          case "微风":
+            this.weatherVariations = "icon-weifeng";
+            break;
+          case "和风":
+            this.weatherVariations = "icon-hefeng";
+            break;
+          case "清风":
+            this.weatherVariations = "icon-qingfeng";
+            break;
+          case "强风/劲风":
+            this.weatherVariations = "icon-tianqizitiku11";
+            break;
+          case "大风":
+            this.weatherVariations = "icon-dafeng";
+            break;
+          case "风暴":
+            this.weatherVariations = "icon-fengbao";
+            break;
+          case "飓风":
+            this.weatherVariations = "icon-jufeng";
+            break;
+          case "热带风暴":
+            this.weatherVariations = "icon-redaifengbao";
+            break;
+          case "霾":
+            this.weatherVariations = "icon-zhongdumai";
+            break;
+          case "中度霾":
+            this.weatherVariations = "icon-zhongdumai";
+            break;
+          case "重度霾":
+            this.weatherVariations = "icon-zhongdumai";
+            break;
+          case "阵雨":
+            this.weatherVariations = "icon-zhenyu";
+            break;
+          case "雷阵雨":
+            this.weatherVariations = "icon-tq-302";
+            break;
+          case "雷阵雨并伴有冰雹":
+            this.weatherVariations = "icon-leizhenyubingbanyoubingbao";
+            break;
+          case "雨夹雪":
+            this.weatherVariations = "icon-zhongxue";
+            break;
+          case "雨":
+            this.weatherVariations = "icon-_weather66";
+            break;
+          case "小雨":
+            this.weatherVariations = "icon-_weather66";
+            break;
+          case "中雨":
+            this.weatherVariations = "icon-zhongyu";
+            break;
+          case "大雨":
+            this.weatherVariations = "icon-dabaoyu";
+            break;
+          case "暴雨":
+            this.weatherVariations = "icon-dabaoyu";
+            break;
+          case "大暴雨":
+            this.weatherVariations = "icon-dabaoyu";
+            break;
+          case "特大暴雨":
+            this.weatherVariations = "icon-dabaoyu";
+            break;
+          case "强阵雨":
+            this.weatherVariations = "icon-dabaoyu";
+            break;
+          case "强雷阵雨":
+            this.weatherVariations = "icon-dabaoyu";
+            break;
+          case "毛毛雨/细雨":
+            this.weatherVariations = "icon-_weather66";
+            break;
+          case "阵雪":
+            this.weatherVariations = "icon-zhenxue";
+            break;
+          case "雪":
+            this.weatherVariations = "icon-xue";
+            break;
+          case "小雪":
+            this.weatherVariations = "icon-xiaoxue";
+            break;
+          case "中雪":
+            this.weatherVariations = "icon-zhongxue";
+            break;
+          case "大雪":
+            this.weatherVariations = "icon-daxue";
+            break;
+          case "暴雪":
+            this.weatherVariations = "icon-baoxue";
+            break;
+          case "雾":
+            this.weatherVariations = "icon-wu";
+            break;
+          case "冻雨":
+            this.weatherVariations = "icon-zhongyu";
+            break;
+          case "沙尘暴":
+            this.weatherVariations = "icon-shachenbao";
+            break;
+          case "小雨-中雨":
+            this.weatherVariations = "icon-xiaoyu-zhongyu";
+            break;
+          case "中雨-大雨":
+            this.weatherVariations = "icon-zhongyu-dayu";
+            break;
+          case "大雨-暴雨":
+            this.weatherVariations = "icon-dayubaoyu";
+            break;
+          case "暴雨-大暴雨":
+            this.weatherVariations = "icon-baoyu-dabaoyu";
+            break;
+          case "大暴雨-特大暴雨":
+            this.weatherVariations = "icon-dabaoyu-tedabaoyu";
+            break;
+          case "小雪-中雪":
+            this.weatherVariations = "icon-xiaoxue-zhongxue";
+            break;
+          case "中雪-大雪":
+            this.weatherVariations = "icon-zhongxue-daxue";
+            break;
+          case "大雪-暴雪":
+            this.weatherVariations = "icon-daxue-baoxue";
+            break;
+          case "浮尘":
+            this.weatherVariations = "icon-fuchen";
+            break;
+          case "扬沙":
+            this.weatherVariations = "icon-yangsha";
+            break;
+          case "强沙尘暴":
+            this.weatherVariations = "icon-shachenbao";
+            break;
+          case "龙卷风":
+            this.weatherVariations = "icon-longjuanfeng";
+            break;
+          case "雾":
+            this.weatherVariations = "icon-wu";
+            break;
+          case "浓雾":
+            this.weatherVariations = "icon-wu";
+            break;
+          case "强浓雾":
+            this.weatherVariations = "icon-dawu";
+            break;
+          case "轻雾":
+            this.weatherVariations = "icon-wu";
+            break;
+          case "大雾":
+            this.weatherVariations = "icon-dawu";
+            break;
+          case "特强浓雾":
+            this.weatherVariations = "icon-dawu";
+            break;
+          case "霾":
+            this.weatherVariations = "icon-zhongdumai";
+            break;
+          case "中度霾":
+            this.weatherVariations = "icon-zhongdumai";
+            break;
+          case "重度霾":
+            this.weatherVariations = "icon-zhongdumai";
+            break;
+          default: {
+            this.weatherVariations = "";
           }
-    }) .catch(function(err){
-      // alert(err);
-      console.log(err);
-    })
+        }
+      }).catch(function (err) {
+        // alert(err);
+        console.log(err);
+      });
   },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
-    this.getEchartData();//初始化加载地图函数
+    this.getEchartData(); //初始化加载地图函数
     this.timeout();
+    //时间更新
+    this.updateTime();
+    this.clockTimer = setInterval(() => {
+      this.updateTime();
+    }, 1000);
 
-
-    
     //绑定resize事件 监听浏览器是否缩小 触发自适应函数随着视图缩小计算比例
     window.addEventListener("resize", this.handleResize);
-    this.handleResize();//视图自适应函数
+    this.handleResize(); //视图自适应函数
   },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
@@ -788,6 +918,13 @@ export default {
           height: auto;
           width: 22px;
           vertical-align: middle;
+        }
+        .iconfont {
+          height: auto;
+          width: 22px;
+          color: #2affff;
+          vertical-align: middle;
+          font-size: 20px;
         }
         .header-span-text {
           display: inline-block;
@@ -891,19 +1028,19 @@ export default {
   }
 }
 
-.main-item-common-totalClass{
+.main-item-common-totalClass {
   line-height: 16px;
-  img{
+  img {
     width: 16px;
     height: auto;
     margin-right: 5px;
     vertical-align: middle;
   }
-  span{
+  span {
     font-size: 16px;
     vertical-align: middle;
     color: #fff;
-    letter-spacing: 2px;//字间距
+    letter-spacing: 2px; //字间距
   }
 }
 </style>

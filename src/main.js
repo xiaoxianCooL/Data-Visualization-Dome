@@ -6,6 +6,7 @@ import router from './router'
 import './assets/css/init.css' //引入初始化样式
 import './assets/css/common.css' //引入公共样式
 
+import './assets/iconfont/iconfont.css';
 import Axios from 'axios'
 const $http = Axios.create({
   baseURL:'http://localhost:8080/',
