@@ -21,6 +21,12 @@ import china from 'echarts/map/json/china.json'
 echarts.registerMap('china', china)
 Vue.config.productionTip = false
 
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import 'swiper/swiper-bundle.css'
+import 'swiper/css/swiper.css'
+// import 'vue-awesome-swiper/node_modules/swiper/dist/css/swiper.css'
+Vue.use(VueAwesomeSwiper)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

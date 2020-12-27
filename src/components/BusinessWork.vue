@@ -1,3 +1,11 @@
+<!--
+ * @Description: 线上线下订单概览组件
+ * @type:折线图
+ * @Author: tanhuaxian
+ * @Date: 2020-12-26 
+ * @LastEditors: tanhuaxian
+ * @LastEditTime: 2020-12-27 
+-->
 <template>
   <div class="business_work">
     <div class="trend">
@@ -243,9 +251,6 @@ export default {
     },
 
     getClueTrend() {
-      console.log(this.getLast3Month(5).last);
-      console.log(this.getLast3Month(5).now);
-
       // this.$http.post(CGI.ClueTrend, {
       //     beginTime: this.getLast3Month(5).last,
       //     endTime: this.getLast3Month(5).now,
