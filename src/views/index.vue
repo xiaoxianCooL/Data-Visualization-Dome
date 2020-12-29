@@ -35,7 +35,7 @@
           <div class="header-item">
             <img
               class="header-time-logo"
-              src="../assets/image/图标-时间.png"
+              src="../assets/image/time.png"
               alt=""
               srcset=""
             />
@@ -47,7 +47,7 @@
         <div class="main-item-left">
           <div class="main-box main-item-left-min">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" /><span
                 >线上线下订单量概览</span
               >
             </div>
@@ -57,7 +57,7 @@
           </div>
           <div class="main-box main-item-left-middle">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" /><span
                 >回收品类分析</span
               >
             </div>
@@ -67,7 +67,7 @@
           </div>
           <div class="main-box main-item-left-max">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" />
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" />
               <span>门店回收费用排行榜</span>
             </div>
             <CosTrankingList/>
@@ -86,7 +86,7 @@
           <div ref="chart" class="main-item-center-map"></div>
           <div class="main-item-center-botton">
             <div class="main-box main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" /><span
                 >全国门店各项数据统计</span
               >
             </div>
@@ -117,7 +117,7 @@
         <div class="main-item-right">
           <div class="main-box main-item-right-min">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" /><span
                 >用户数据统计</span
               >
             </div>
@@ -127,7 +127,7 @@
           </div>
           <div class="main-box main-item-right-middle">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" /><span
                 >总单位趋势统计</span
               >
             </div>
@@ -137,7 +137,7 @@
           </div>
           <div class="main-box main-item-right-max">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+              <img src="../assets/image/qianzhui.png" alt="" srcset="" /><span
                 >实时订单</span
               >
             </div>
@@ -844,7 +844,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url("../assets/image/大背景.jpg") no-repeat;
+  background: url("../assets/image/backdrop.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .map-page-con {
@@ -861,7 +861,7 @@ export default {
   .header {
     width: 100%;
     height: 212px;
-    background: url("../assets/image/顶部.png") no-repeat;
+    background: url("../assets/image/toppng.png") no-repeat;
     background-size: 100% 100%;
     position: absolute;
     top: 0;
@@ -938,17 +938,17 @@ export default {
       margin-right: 15px;
       // background-color: cornflowerblue;
       .main-item-left-min {
-        background: url("../assets/image/小框.png") no-repeat;
+        background: url("../assets/image/min.png") no-repeat;
         height: 200px;
         background-size: 100% 100%;
       }
       .main-item-left-middle {
-        background: url("../assets/image/中框.png") no-repeat;
+        background: url("../assets/image/cen.png") no-repeat;
         height: 250px;
         background-size: 100% 100%;
       }
       .main-item-left-max {
-        background: url("../assets/image/大框.png") no-repeat;
+        background: url("../assets/image/max.png") no-repeat;
         height: 327px;
         background-size: 100% 100%;
       }
@@ -978,7 +978,7 @@ export default {
       }
       .main-item-center-botton {
         margin-top: 46px;
-        background: url("../assets/image/中间框.png") no-repeat;
+        background: url("../assets/image/center.png") no-repeat;
         height: 150px;
         background-size: 100% 100%;
       }
@@ -1024,17 +1024,17 @@ export default {
       height: 100%;
       // background-color: cornflowerblue;
       .main-item-right-min {
-        background: url("../assets/image/小框.png") no-repeat;
+        background: url("../assets/image/min.png") no-repeat;
         height: 200px;
         background-size: 100% 100%;
       }
       .main-item-right-middle {
-        background: url("../assets/image/中框.png") no-repeat;
+        background: url("../assets/image/cen.png") no-repeat;
         height: 200px;
         background-size: 100% 100%;
       }
       .main-item-right-max {
-        background: url("../assets/image/大框.png") no-repeat;
+        background: url("../assets/image/max.png") no-repeat;
         height: 377px;
         background-size: 100% 100%;
         .down {

@@ -102,7 +102,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  background:url("../assets/image/滑动块bottom.png") no-repeat;
+  background:url("../assets/image/slideBottom.png") no-repeat;
   background-size:100% 100%;
   overflow: hidden;
   box-sizing: border-box;
@@ -112,7 +112,7 @@ export default {
   position: absolute;
   left: 0;
   right: 0;
-  background:url("../assets/image/滑动块top.png") no-repeat;
+  background:url("../assets/image/slideTop.png") no-repeat;
   background-size:100% 103%;
   overflow: hidden;
   box-sizing: border-box;
