@@ -14,7 +14,7 @@
         <div
           class="trend_line"
           ref="trendLine"
-          style="width: 100%; height: 161px"
+          style="width: 100%; height: 141px"
         ></div>
       </div>
     </div>
@@ -23,8 +23,8 @@
 
 <script>
 import echarts from "echarts";
-// import CGI from "../utils/CGI";
 import echartsLiquidfill from "echarts-liquidfill";
+import CGI from "../utils/Http.js";
 
 export default {
   data() {
@@ -38,7 +38,42 @@ export default {
     };
   },
 
+  mounted() {
+    // this.getClueOrder();
+    // this.getClueCondition();
+    this.getClueTrend();
+  },
   methods: {
+        getClueTrend() {
+      this.$http.get(CGI.overviewOfOnlineAndOfflineOrders, null, false).then((res1) => {
+          if (res1 && res1.data) {
+            let data = res1.data;
+            console.log("----------线上线下数据统计-------------");
+            console.log(data);
+            let res = new Object();
+            res.model = data.rows;//数据
+            this.clueNumberList = res.model.map((i) => {
+              return i.online;
+            });
+            this.orderNumberList = res.model.map((i) => {
+              return i.offline;
+            });
+            this.monthList = res.model.map((i) => {
+              return i.moneth_date + '月';
+            });
+            this.initTrendLine();
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+
+      // this.$http.get(CGI.overviewOfOnlineAndOfflineOrders, {
+      //     beginTime: this.getLast3Month(5).last,
+      //     endTime: this.getLast3Month(5).now,
+      //   }).then((res) => {
+
+      //   });
+    },
     getLast6Month() {
       //创建现在的时间
       var data = new Date();
@@ -179,7 +214,7 @@ export default {
         },
         series: [
           {
-            name: "线索",
+            name: "线上订单",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -214,7 +249,7 @@ export default {
             data: this.clueNumberList,
           },
           {
-            name: "订单量",
+            name: "线下订单",
             type: "line",
             smooth: true,
             symbol: "circle",
@@ -250,72 +285,7 @@ export default {
       });
     },
 
-    getClueTrend() {
-      // this.$http.post(CGI.ClueTrend, {
-      //     beginTime: this.getLast3Month(5).last,
-      //     endTime: this.getLast3Month(5).now,
-      //   }).then((res) => {
-      let res = new Object();
-      res.model = [
-        {
-          clueNumber: 9,
-          month: "1月",
-          orderNumber: 1,
-        },
-        {
-          clueNumber: 10,
-          month: "2月",
-          orderNumber: 2,
-        },
-        {
-          clueNumber: 10,
-          month: "3月",
-          orderNumber: 2,
-        },
-        {
-          clueNumber: 15,
-          month: "4月",
-          orderNumber: 6,
-        },
-        {
-          clueNumber: 4,
-          month: "5月",
-          orderNumber: 2,
-        },
-        {
-          clueNumber: 7,
-          month: "6月",
-          orderNumber: 13,
-        },
-        {
-          clueNumber: 10,
-          month: "7月",
-          orderNumber: 3,
-        },
-        {
-          clueNumber: 3,
-          month: "8月",
-          orderNumber: 15,
-        },
-      ];
-      this.clueNumberList = res.model.map((i) => {
-        return i.clueNumber;
-      });
-      this.orderNumberList = res.model.map((i) => {
-        return i.orderNumber;
-      });
-      this.monthList = res.model.map((i) => {
-        return i.month;
-      });
-      this.initTrendLine();
-      //   });
-    },
-  },
 
-  mounted() {
-    // this.getClueOrder();
-    // this.getClueCondition();
-    this.getClueTrend();
   },
 };
 </script>

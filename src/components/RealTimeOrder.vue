@@ -48,158 +48,7 @@ components: {
 data() {
 //这里存放数据
 return {
-    dataGroup:[
-        [{
-        create_date: "2020-12-23 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店1"
-    }],
-        [{
-        create_date: "2020-12-24 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店2"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店4"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店5"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店6"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店7"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店8"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店9"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店10"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店11"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店12"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店13"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店14"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店15"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店16"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店17"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-        [{
-        create_date: "2020-12-25 10:05:57",
-mobile_phone: "15549520166",
-order_type: "2",
-shop_name: "升龙广场店3"
-    }],
-    ],
+    dataGroup:[],
     rows:8,
     swiperOptions:{
         autoplay: {
@@ -266,7 +115,9 @@ methods: {
 
 
       }
-    });
+    }).catch(err => {
+          console.log(err);
+        });
   },
      handleGrouping(dataList) {
     if (Array.isArray(dataList) && dataList.length) {

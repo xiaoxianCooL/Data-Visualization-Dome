@@ -61,13 +61,16 @@
                 >回收品类分析</span
               >
             </div>
+            <div>
+              <RecyclingCategory />
+            </div>
           </div>
           <div class="main-box main-item-left-max">
             <div class="main-item-common-totalClass">
               <img src="../assets/image/标题前缀-1.png" alt="" srcset="" />
               <span>门店回收费用排行榜</span>
             </div>
-            <div ref="tanking" style="height:330px;width:530px"></div>
+            <CosTrankingList/>
           </div>
         </div>
         <div class="main-item-center">
@@ -87,25 +90,25 @@
                 >全国门店各项数据统计</span
               >
             </div>
-            <div class=" main-item-common-row">
+            <div class="main-item-common-row">
               <div class="row-div">
-                <div>200.36</div>
+                <div>{{ StatisticalData.sum_money }}</div>
                 <span>总金额</span>
               </div>
               <div class="row-div">
-                <div>200.36</div>
+                <div>{{ StatisticalData.sum_total_weight }}</div>
                 <span>总重量</span>
               </div>
               <div class="row-div">
-                <div>200</div>
+                <div>{{ StatisticalData.sum_total_number }}</div>
                 <span>总个数</span>
               </div>
               <div class="row-div">
-                <div>200</div>
+                <div>{{ StatisticalData.sum_total_other }}</div>
                 <span>总其他</span>
               </div>
               <div class="row-div">
-                <div>200</div>
+                <div>{{ StatisticalData.orderCount }}</div>
                 <span>总订单</span>
               </div>
             </div>
@@ -114,26 +117,32 @@
         <div class="main-item-right">
           <div class="main-box main-item-right-min">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span>用户数据统计</span>
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >用户数据统计</span
+              >
             </div>
             <div>
-              <Histogram/>
+              <Histogram />
             </div>
           </div>
           <div class="main-box main-item-right-middle">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span>总单位趋势统计</span>
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >总单位趋势统计</span
+              >
             </div>
             <div>
-              <Tendency/>
+              <Tendency />
             </div>
           </div>
           <div class="main-box main-item-right-max">
             <div class="main-item-common-totalClass">
-              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span>实时订单</span>
+              <img src="../assets/image/标题前缀-1.png" alt="" srcset="" /><span
+                >实时订单</span
+              >
             </div>
             <div class="down">
-              <RealTimeOrder/>
+              <RealTimeOrder />
             </div>
           </div>
         </div>
@@ -149,9 +158,11 @@
 import CGI from "../utils/Http.js";
 import FlipClock from "../components/flipClock";
 import BusinessWork from "../components/BusinessWork";
-import RealTimeOrder from "../components/RealTimeOrder"
-import Histogram from "../components/Histogram"
-import Tendency from "../components/Tendency"
+import RealTimeOrder from "../components/RealTimeOrder";
+import Histogram from "../components/Histogram";
+import Tendency from "../components/Tendency";
+import RecyclingCategory from "../components/RecyclingCategory";
+import CosTrankingList from "../components/CosTrankingList";
 import moment from "moment"; //时间插件
 export default {
   //import引入的组件需要注入到对象中才能使用
@@ -160,11 +171,14 @@ export default {
     BusinessWork,
     RealTimeOrder,
     Histogram,
-    Tendency
+    Tendency,
+    RecyclingCategory,
+    CosTrankingList,
   },
   data() {
     //这里存放数据
     return {
+      StatisticalData: {},
       pageScale: 1, //默认比例1
       deviceUnlineNum: "1",
       deviceUnlineChangeNum: "2",
@@ -173,7 +187,7 @@ export default {
       timeClock: {
         time: "",
         date: "",
-        week: ""
+        week: "",
       },
       infoData: [
         //地图数据
@@ -181,7 +195,7 @@ export default {
           //城市经纬度 索引0为开始城市  索引1为结束城市
           coords: [
             [113.2531, 23.1516],
-            [116.4056, 39.9053]
+            [116.4056, 39.9053],
           ],
           //飞线颜色 16进制格式
           lineStyle: { color: "#4ab2e5" },
@@ -192,11 +206,11 @@ export default {
               //市名
               cityName: "一环",
               //数量 (根据数量排序)
-              num: 55
-            }
-          ]
-        }
-      ]
+              num: 55,
+            },
+          ],
+        },
+      ],
     };
   },
   //监听属性 类似于data概念
@@ -211,392 +225,43 @@ export default {
   mounted() {
     console.log(CGI.MapDataInfo);
     this.getEchartData(); //初始化加载地图函数
-    this.timeout();
     this.getWeatherData(); //获取天气数据
     this.updateTime(); //时间更新
     this.clockTimer = setInterval(() => {
       this.updateTime();
     }, 1000);
     this.getStatisticalData(); //全国门店各项数据统计
-    this.infoTanking();
     //绑定resize事件 监听浏览器是否缩小 触发自适应函数随着视图缩小计算比例
     window.addEventListener("resize", this.handleResize);
     this.handleResize(); //视图自适应函数
   },
   //方法集合
   methods: {
-    infoTanking() {
-            const tanking = this.$echarts.init(this.$refs.tanking);
-      let data = [
-        {
-          name: "上海市",
-          num: "21.987691"
-        },
-        {
-          name: "广州市",
-          num: "20.377176"
-        },
-        {
-          name: "北京市",
-          num: "19.127404"
-        },
-        {
-          name: "深圳市",
-          num: "18.40882"
-        },
-        {
-          name: "郑州市",
-          num: "17.980597"
-        },
-        {
-          name: "杭州市",
-          num: "16.957898"
-        },
-        {
-          name: "南京市",
-          num: "15.099577"
-        },
-        {
-          name: "武汉市",
-          num: "14.76103"
-        },
-        // {
-        //   name: "重庆市",
-        //   num: "15.002175"
-        // },
-        // {
-        //   name: "成都市",
-        //   num: "12.153536"
-        // }
-      ];
 
-      function contains(arr, dst) {
-        var i = arr.length;
-        while ((i -= 1)) {
-          if (arr[i] == dst) {
-            return i;
-          }
-        }
-        return false;
-      }
-
-      var attackSourcesColor = [
-        new this.$echarts.graphic.LinearGradient(0, 1, 1, 1, [
-          {
-            offset: 0,
-            color: "#EB3B5A"
-          },
-          {
-            offset: 1,
-            color: "#FE9C5A"
-          }
-        ]),
-        new this.$echarts.graphic.LinearGradient(0, 1, 1, 1, [
-          {
-            offset: 0,
-            color: "#FA8231"
-          },
-          {
-            offset: 1,
-            color: "#FFD14C"
-          }
-        ]),
-        new this.$echarts.graphic.LinearGradient(0, 1, 1, 1, [
-          {
-            offset: 0,
-            color: "#F7B731"
-          },
-          {
-            offset: 1,
-            color: "#FFEE96"
-          }
-        ]),
-        new this.$echarts.graphic.LinearGradient(0, 1, 1, 1, [
-          {
-            offset: 0,
-            color: "#395CFE"
-          },
-          {
-            offset: 1,
-            color: "#2EC7CF"
-          }
-        ])
-      ];
-      var attackSourcesColor1 = [
-        "#EB3B5A",
-        "#FA8231",
-        "#F7B731",
-        "#3860FC",
-        "#1089E7",
-        "#F57474",
-        "#56D0E3",
-        "#1089E7",
-        "#F57474",
-        "#1089E7",
-        "#F57474",
-        "#F57474"
-      ];
-      var attaData = [];
-      var attaName = [];
-      var topName = [];
-      data.forEach((it, index) => {
-        attaData[index] = parseFloat(it.num).toFixed(0);
-        //attaData[index] = parseInt(it.num);
-        attaName[index] = it.name;
-        topName[index] = `${it.name}`;
-      });
-      var salvProMax = [];
-      var max = attaData[0];
-      for (let i = 0; i < attaData.length; i++) {
-        max = max < attaData[i + 1] ? attaData[i + 1] : max;
-      }
-      for (let i = 0; i < attaData.length; i++) {
-        salvProMax.push(max); //背景按最大值
-      }
-
-      function attackSourcesDataFmt(sData) {
-        var sss = [];
-        sData.forEach(function(item, i) {
-          let itemStyle = {
-            color: i > 3 ? attackSourcesColor[3] : attackSourcesColor[i]
-          };
-          sss.push({
-            value: item,
-            itemStyle: itemStyle
-          });
-        });
-        return sss;
-      }
-
-      var option = {
-        backgroundColor: "",
-        tooltip: {
-          show: false,
-          backgroundColor: "rgba(3,169,244, 0.5)", //背景颜色（此时为默认色）
-          textStyle: {
-            fontSize: 16
-          }
-        },
-        color: ["#F7B731"],
-        legend: {
-          show: false,
-          pageIconSize: [12, 12],
-          itemWidth: 20,
-          itemHeight: 10,
-          textStyle: {
-            //图例文字的样式
-            fontSize: 12,
-            color: "#fff"
-          },
-          selectedMode: false,
-          data: ["个人所得(亿元)"]
-        },
-        grid: {
-          left: "0%",
-          right: "2%",
-          width: "90%",
-          bottom: "2%",
-          top: "8%",
-          containLabel: true
-        },
-        xAxis: {
-          type: "value",
-
-          splitLine: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          }
-        },
-        yAxis: [
-          {
-            //左侧排行数字
-            type: "category",
-            inverse: true,
-            axisLine: {
-              show: false
-            },
-            axisTick: {
-              show: false
-            },
-            axisPointer: {
-              label: {
-                show: true
-                //margin: 30
-              }
-            },
-            pdaaing: [5, 0, 0, 0],
-            postion: "right",
-            data: attaName,
-            axisLabel: {
-              margin: 30,
-              fontSize: 12,
-              align: "left",
-              padding: [2, 0, 0, 0],
-              color: "#000",
-              rich: {
-                nt1: {
-                  color: "#fff",
-                  backgroundColor: attackSourcesColor1[0],
-                  width: 15,
-                  height: 15,
-                  fontSize: 12,
-                  align: "center",
-                  borderRadius: 100,
-                  lineHeight: "5",
-                  padding: [0, 1, 2, 1]
-                  // padding:[0,0,2,0],
-                },
-                nt2: {
-                  color: "#fff",
-                  backgroundColor: attackSourcesColor1[1],
-                  width: 15,
-                  height: 15,
-                  fontSize: 12,
-                  align: "center",
-                  borderRadius: 100,
-                  padding: [0, 1, 2, 1]
-                },
-                nt3: {
-                  color: "#fff",
-                  backgroundColor: attackSourcesColor1[2],
-                  width: 15,
-                  height: 15,
-                  fontSize: 12,
-                  align: "center",
-                  borderRadius: 100,
-                  padding: [0, 1, 2, 1]
-                },
-                nt: {
-                  color: "#fff",
-                  backgroundColor: attackSourcesColor1[3],
-                  width: 15,
-                  height: 15,
-                  fontSize: 12,
-                  align: "center",
-                  lineHeight: 3,
-                  borderRadius: 100,
-                  padding: [0, 1, 2, 1],
-                  lineHeight: 5
-                }
-              },
-              formatter: function(value, index) {
-                index = contains(attaName, value) + 1;
-                if (index - 1 < 3) {
-                  return ["{nt" + index + "|" + index + "}"].join("\n");
-                } else {
-                  return ["{nt|" + index + "}"].join("\n");
-                }
-              }
-            }
-          },
-          {
-            //右侧名字
-            type: "category",
-            inverse: true,
-            axisTick: "none",
-            axisLine: "none",
-            show: true,
-            axisLabel: {
-              textStyle: {
-                color: "#fff",
-                fontSize: "12"
-              }
-            },
-            //data: attackSourcesDataFmt(attaName)
-            data: attackSourcesDataFmt(attaData) //数字
-          },
-          {
-            //名称
-            type: "category",
-            offset: -10,
-            position: "left",
-            axisLabel: {
-              color: `#fff`,
-              fontSize: 10
-            },
-            axisLine: {
-              show: false
-            },
-            inverse: true,
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              interval: 0,
-              color: ["#fff"],
-              align: "left",
-              verticalAlign: "bottom",
-              lineHeight: 32,
-              fontSize: 12
-            },
-            data: topName
-          }
-        ],
-        series: [
-          {
-            //条形图数值
-            zlevel: 1,
-            name: "个人所得(亿元)",
-            type: "bar",
-            barWidth: "15px",
-            animationDuration: 1500,
-            data: attackSourcesDataFmt(attaData),
-            align: "center",
-            itemStyle: {
-              normal: {
-                barBorderRadius: 10
-              }
-            },
-            label: {
-              show: false,
-              fontSize: 12,
-              color: "#fff",
-              textBorderWidth: 2,
-              padding: [2, 0, 0, 0]
-            }
-          },
-          {
-            //最大值背景条形图
-            name: "个人所得(亿元)",
-            type: "bar",
-            barWidth: 15,
-            barGap: "-100%",
-            margin: "20",
-            data: salvProMax,
-            textStyle: {
-              //图例文字的样式
-              fontSize: 12,
-              color: "#fff"
-            },
-            itemStyle: {
-              normal: {
-                color: "#05325F",
-                //width:"100%",
-                fontSize: 12,
-                barBorderRadius: 30
-              }
-            }
-          }
-        ]
-      };
-      tanking.setOption(option, true);
-    },
-    //获取地图数据
+    //获取主表统计数据
     getStatisticalData() {
       this.$http
         .get(CGI.statisticalData, {})
-        .then(res => {
+        .then((res) => {
+          console.log("-------------------统计数据------------");
           console.log(res);
+          if (res && res.data) {
+            this.$nextTick(function () {
+              this.StatisticalData = res.data.rows;
+              var StatisticalData = String(this.StatisticalData.shopCount);
+              if (StatisticalData.length == "1") {
+                this.deviceUnlineChangeNum = "00" + StatisticalData;
+              } else if (StatisticalData.length == "2") {
+                this.deviceUnlineChangeNum = "10" + StatisticalData;
+              } else if (StatisticalData.length == "3") {
+                this.deviceUnlineChangeNum = StatisticalData;
+              } else {
+                this.deviceUnlineChangeNum = "999";
+              }
+            });
+          }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -604,7 +269,7 @@ export default {
     getWeatherData() {
       this.$http
         .get(CGI.WeatherDataInfo, {})
-        .then(res => {
+        .then((res) => {
           const weatherData = res.data.lives[0];
           console.log(weatherData.weather);
           console.log(weatherData.temperature);
@@ -801,7 +466,7 @@ export default {
             }
           }
         })
-        .catch(function(err) {
+        .catch(function (err) {
           // alert(err);
           console.log(err);
         });
@@ -810,9 +475,10 @@ export default {
     getEchartData() {
       const myChart = this.$echarts.init(this.$refs.chart);
       var points = [
-        { value: [113.640579, 34.725071], itemStyle: { color: "#23d96e" } }
+        // { value: [113.640579, 34.725071], itemStyle: { color: "#23d96e" } },
         // { value: [113.640579, 34.725071], itemStyle: { color: '#' + Math.random().toString(16).substr(2, 6).toUpperCase() } },
         // { value: [127.9688, 45.368], itemStyle: { color: "#4fb6d2" } },
+
         // { value: [110.3467, 41.4899], itemStyle: { color: "#52b9c7" } },
         // { value: [125.8154, 44.2584], itemStyle: { color: "#5abead" } },
         // { value: [116.4551, 40.2539], itemStyle: { color: "#f34e2b" } },
@@ -833,12 +499,25 @@ export default {
       ];
       this.$http
         .get(CGI.MapDataInfo, {})
-        .then(res => {
+        .then((res) => {
+          console.log("---------------------地图数据--------------------");
           console.log(res);
           if (res.data && res.status == 200) {
             let data = res.data;
             // this.infoData = JSON.parse(JSON.stringify(res.data.rows));
             var MapData = res.data.rows;
+            points = res.data.rows;
+            // console.log(points);
+            points.map((i) => {
+              i.value = i.coords[1];
+              i.itemStyle = i.lineStyle;
+              i.startProvince = i.startProvince;
+              i.endProvince = i.endProvince;
+              i.city = i.city;
+            })
+            //             this.XName = dataList.map((i) => {
+            //   return i.moneth_date + '月';
+            // });
             // // console.log(JSON.parse(JSON.stringify(this.infoData[0].coords)));
             // // this.infoData[0].coords = JSON.parse(JSON.stringify(this.infoData[0].coords))
             // console.log(this.infoData);
@@ -863,7 +542,8 @@ export default {
             //     ],
             //   },
             // ]
-            console.log(MapData);
+            console.log(points);
+            // console.log(MapData);
             var option = {
               // backgroundColor: "#181f4e",
               // backgroundColor: 'rgba(128, 128, 128, 0.1)', //rgba设置透明度0.1,
@@ -880,38 +560,21 @@ export default {
 
               tooltip: {
                 trigger: "item",
-                formatter: function(params) {
-                  //   console.log(params);
-                  if (params.componentSubType == "lines" && params.data) {
-                    //飞线数据判断
-                    //               console.log(params);
-                    // console.log(params.data.startProvince);
-                    // console.log(params.data.endProvince);
-                    // console.log(params.data.city);
-                    // console.log(params.data.city[0].cityName);
-                    // console.log(params.data.city[0].num);
-                    // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].cityName+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].num;
-                    return "123";
-                  } else if (
-                    (params.componentSubType == "map" ||
-                      params.componentSubType == "effectScatter") &&
-                    params.data
-                  ) {
+                formatter: function (params) {
+                  if (params.componentSubType == "lines" ) {//飞线数据判断
+                    return params.name;
+                    //  return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].name+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].count;
+                  } else if (params.componentSubType == "map" ) {//热力图数据
+                  console.log(params);
                     //散点数据判断
-                    // console.log(params);
-                    // console.log(params.data.startProvince);
-                    // console.log(params.data.endProvince);
-                    // console.log(params.data.city);
-                    // console.log(params.data.city[0].cityName);
-                    // console.log(params.data.city[0].num);
-                    return "456";
-                    // debugger
-                    // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].cityName+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].num;
-                  } else {
-                    //热力图数据
-                    return "789";
+                    // return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].name+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].count;
+                    return params.name;
+                  }else if(params.componentSubType =="effectScatter" && params.data){
+                    console.log(params);
+                      return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].name+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].count;
+                      // return params.name;
                   }
-                }
+                },
               },
               /*visualMap: {
           min: 0,
@@ -964,27 +627,27 @@ export default {
                       colorStops: [
                         {
                           offset: 0,
-                          color: "#09132c" // 0% 处的颜色
+                          color: "#09132c", // 0% 处的颜色
                         },
                         {
                           offset: 1,
-                          color: "#274d68" // 100% 处的颜色
-                        }
+                          color: "#274d68", // 100% 处的颜色
+                        },
                       ],
-                      globalCoord: true // 缺省为 false
+                      globalCoord: true, // 缺省为 false
                     },
                     shadowColor: "rgb(58,115,192)",
                     shadowOffsetX: 10,
-                    shadowOffsetY: 11
+                    shadowOffsetY: 11,
                   },
                   emphasis: {
                     areaColor: "#2AB8FF",
                     borderWidth: 0,
                     color: "green",
                     label: {
-                      show: false
-                    }
-                  }
+                      show: false,
+                    },
+                  },
                 },
                 regions: [
                   {
@@ -997,12 +660,12 @@ export default {
                         opacity: 0,
                         label: {
                           show: false,
-                          color: "#009cc9"
-                        }
-                      }
-                    }
-                  }
-                ]
+                          color: "#009cc9",
+                        },
+                      },
+                    },
+                  },
+                ],
               },
               series: [
                 //地图
@@ -1013,14 +676,14 @@ export default {
                     normal: {
                       show: true,
                       textStyle: {
-                        color: "#1DE9B6"
-                      }
+                        color: "#1DE9B6",
+                      },
                     },
                     emphasis: {
                       textStyle: {
-                        color: "rgb(183,185,14)"
-                      }
-                    }
+                        color: "rgb(183,185,14)",
+                      },
+                    },
                   },
 
                   itemStyle: {
@@ -1035,25 +698,25 @@ export default {
                         colorStops: [
                           {
                             offset: 0,
-                            color: "#09132c" // 0% 处的颜色
+                            color: "#09132c", // 0% 处的颜色
                           },
                           {
                             offset: 1,
-                            color: "#274d68" // 100% 处的颜色
-                          }
+                            color: "#274d68", // 100% 处的颜色
+                          },
                         ],
-                        globalCoord: true // 缺省为 false
-                      }
+                        globalCoord: true, // 缺省为 false
+                      },
                     },
                     emphasis: {
                       areaColor: "rgb(46,229,206)",
                       //    shadowColor: 'rgb(12,25,50)',
-                      borderWidth: 0.1
-                    }
+                      borderWidth: 0.1,
+                    },
                   },
                   zoom: 1.1,
                   //     roam: false,
-                  map: "china" //使用
+                  map: "china", //使用
                   // data: this.difficultData //热力图数据   不同区域 不同的底色
                 },
                 //散点
@@ -1065,7 +728,7 @@ export default {
                   rippleEffect: {
                     period: 15,
                     scale: 4,
-                    brushType: "fill"
+                    brushType: "fill",
                   },
                   hoverAnimation: true,
                   label: {
@@ -1074,8 +737,8 @@ export default {
                       position: "right",
                       offset: [15, 0],
                       color: "#1DE9B6",
-                      show: true
-                    }
+                      show: true,
+                    },
                   },
                   itemStyle: {
                     normal: {
@@ -1084,11 +747,11 @@ export default {
  return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6);
  }*/,
                       shadowBlur: 10,
-                      shadowColor: "#333"
-                    }
+                      shadowColor: "#333",
+                    },
                   },
                   symbolSize: 12,
-                  data: points
+                  data: points,
                 }, //地图线的动画效果
                 {
                   type: "lines",
@@ -1098,7 +761,7 @@ export default {
                     period: 4, //箭头指向速度，值越小速度越快
                     trailLength: 0.4, //特效尾迹长度[0,1]值越大，尾迹越长重
                     symbol: "arrow", //箭头图标
-                    symbolSize: 7 //图标大小
+                    symbolSize: 7, //图标大小
                   },
                   lineStyle: {
                     normal: {
@@ -1115,148 +778,17 @@ export default {
  }*/
                       width: 1, //线条宽度
                       opacity: 0.1, //尾迹线条透明度
-                      curveness: 0.3 //尾迹线条曲直度
-                    }
+                      curveness: 0.3, //尾迹线条曲直度
+                    },
                   }, //
-                  data: MapData
-                  // [
-                  //   {
-                  //     //城市经纬度 索引0为开始城市  索引1为结束城市
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [118.8062, 31.9208],
-                  //     ],
-                  //     //飞线颜色 16进制格式
-                  //     lineStyle: { color: "#4ab2e5" },
-                  //     startProvince: "广东",
-                  //     endProvince: "北京",
-                  //     city: [
-                  //       {
-                  //         //市名
-                  //         //数量 (根据数量排序)
-                  //       },
-                  //     ],
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [127.9688, 45.368],
-                  //     ],
-                  //     lineStyle: { color: "#4fb6d2" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [110.3467, 41.4899],
-                  //     ],
-                  //     lineStyle: { color: "#52b9c7" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [125.8154, 44.2584],
-                  //     ],
-                  //     lineStyle: { color: "#5abead" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [116.4551, 40.2539],
-                  //     ],
-                  //     lineStyle: { color: "#f34e2b" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [123.1238, 42.1216],
-                  //     ],
-                  //     lineStyle: { color: "#f56321" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [114.4995, 38.1006],
-                  //     ],
-                  //     lineStyle: { color: "#f56f1c" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [117.4219, 39.4189],
-                  //     ],
-                  //     lineStyle: { color: "#f58414" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [112.3352, 37.9413],
-                  //     ],
-                  //     lineStyle: { color: "#f58f0e" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [109.1162, 34.2004],
-                  //     ],
-                  //     lineStyle: { color: "#f5a305" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [103.5901, 36.3043],
-                  //     ],
-                  //     lineStyle: { color: "#e7ab0b" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [106.3586, 38.1775],
-                  //     ],
-                  //     lineStyle: { color: "#dfae10" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [101.4038, 36.8207],
-                  //     ],
-                  //     lineStyle: { color: "#d5b314" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [103.9526, 30.7617],
-                  //     ],
-                  //     lineStyle: { color: "#c1bb1f" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [108.384366, 30.439702],
-                  //     ],
-                  //     lineStyle: { color: "#b9be23" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [113.0823, 28.2568],
-                  //     ],
-                  //     lineStyle: { color: "#a6c62c" },
-                  //   },
-                  //   {
-                  //     coords: [
-                  //       [119.4543, 25.9222],
-                  //       [102.9199, 25.46639],
-                  //     ],
-                  //     lineStyle: { color: "#96cc34" },
-                  //   },
-                  // ],
-                }
-              ]
+                  data: MapData,
+                },
+              ],
             };
             myChart.setOption(option, true);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -1273,7 +805,7 @@ export default {
         "星期三",
         "星期四",
         "星期五",
-        "星期六"
+        "星期六",
       ];
       this.$set(this.timeClock, "week", weekArr[nowMoment.day()]);
     },
@@ -1293,16 +825,6 @@ export default {
       const scaleW = conW / screenW;
       const scaleH = conH / screenH;
       this.pageScale = Math.min(scaleW, scaleH);
-    },
-    //测试函数
-    timeout() {
-      let _this = this;
-      setTimeout(function() {
-        _this.deviceUnlineNum = "000";
-        _this.deviceUnlineChangeNum = "839";
-        // _this.deviceUnlineChangeNum = (Number(_this.deviceUnlineChangeNum)+1).toString();
-        console.log(_this.deviceUnlineChangeNum);
-      }, 1000);
     }
   },
   beforeCreate() {}, //生命周期 - 创建之前
@@ -1313,7 +835,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
   }, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
 
@@ -1417,17 +939,17 @@ export default {
       // background-color: cornflowerblue;
       .main-item-left-min {
         background: url("../assets/image/小框.png") no-repeat;
-        height: 220px;
+        height: 200px;
         background-size: 100% 100%;
       }
       .main-item-left-middle {
         background: url("../assets/image/中框.png") no-repeat;
-        height: 200px;
+        height: 250px;
         background-size: 100% 100%;
       }
       .main-item-left-max {
         background: url("../assets/image/大框.png") no-repeat;
-        height: 357px;
+        height: 327px;
         background-size: 100% 100%;
       }
     }
@@ -1515,13 +1037,13 @@ export default {
         background: url("../assets/image/大框.png") no-repeat;
         height: 377px;
         background-size: 100% 100%;
-          .down {
-    margin-top: 30px;
-    background-color: rgba(10, 10, 13, 0.72);
-    padding: 20px;
-    // visibility: hidden;
-    height: 305px;
-  }  
+        .down {
+          margin-top: 30px;
+          background-color: rgba(10, 10, 13, 0.72);
+          padding: 20px;
+          // visibility: hidden;
+          height: 305px;
+        }
       }
     }
   }

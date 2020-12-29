@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import App from '../App.vue'
 import index from '../views/index.vue'
-import map from '../demo/demo.vue'
 
 Vue.use(Router)
 

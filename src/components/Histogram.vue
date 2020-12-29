@@ -48,17 +48,18 @@ export default {
           console.log(data);
           data.rows.map(i => {
             // this.countryProjectNumber.push(i.moneth_date);
-            this.UserNumber.push(i.number_data);
-            this.planMonth.push(i.moneth_date);
+            this.UserNumber.unshift(i.number_data);
+            this.planMonth.unshift(i.moneth_date+'月');
           });
 
         //   this.countryProjectNumber.reverse();
           this.UserNumber.reverse();
           this.planMonth.reverse();
-
           this.infoHistogram();
         }
-      });
+      }).catch(err => {
+          console.log(err);
+        });
     },
     infoHistogram() {
       const histogram = this.$echarts.init(this.$refs.histogram);
