@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="Histogram">
-    <div ref="histogram" style="height:160px;width:530px"></div>
+    <div ref="histogram" style="height:190px;width:530px"></div>
   </div>
 </template>
 
@@ -25,7 +25,8 @@ export default {
     return {
     //cityName: [], // 1
       UserNumber: [], // 用户总数量
-      planMonth: []
+      planMonth: [],
+      updateWeatherTimer:null
     };
   },
   //监听属性 类似于data概念
@@ -37,15 +38,26 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
     this.getUserNumber();
+    this.updateDataByTimer();
   },
   //方法集合
   methods: {
+    updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getUserNumber();
+    }, 180000);
+  },
     getUserNumber() {
       this.$http.get(CGI.numberOfUsersStatistics, null, false).then(res => {
         if (res && res.data) {
           let data = res.data;
           console.log("----------用户数量统计-------------");
           console.log(data);
+            this.UserNumber = [];
+            this.planMonth = [];
           data.rows.map(i => {
             // this.countryProjectNumber.push(i.moneth_date);
             this.UserNumber.unshift(i.number_data);

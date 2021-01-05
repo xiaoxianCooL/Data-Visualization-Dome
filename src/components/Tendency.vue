@@ -8,7 +8,7 @@
 -->
 <template>
 <div class="Tendency">
-    <div ref="tendency" style="height:160px;width:530px"></div>
+    <div ref="tendency" style="height:210px;width:530px"></div>
 </div>
 </template>
 
@@ -29,6 +29,7 @@ return {
     dataValue1:[],
     dataValue2:[],
     dataValue3:[],
+    updateWeatherTimer:null
 };
 },
 //监听属性 类似于data概念
@@ -42,9 +43,18 @@ created() {
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
     this.getTendency();
+    this.updateDataByTimer();
 },
 //方法集合
 methods: {
+    updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getTendency();
+    }, 180000);
+  },
     getTendency() {
       this.$http.get(CGI.trendStatistics, null, false).then(res => {
         if (res && res.data) {

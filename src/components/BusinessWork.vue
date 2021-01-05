@@ -14,7 +14,7 @@
         <div
           class="trend_line"
           ref="trendLine"
-          style="width: 100%; height: 141px"
+          style="width: 100%; height: 171px"
         ></div>
       </div>
     </div>
@@ -35,6 +35,7 @@ export default {
       orderNumberList: [],
       monthList: [],
       intentionRatio: {}, // 意向百分比
+      updateWeatherTimer:null
     };
   },
 
@@ -42,8 +43,18 @@ export default {
     // this.getClueOrder();
     // this.getClueCondition();
     this.getClueTrend();
+    this.updateDataByTimer();
   },
   methods: {
+    updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getClueTrend();
+      console.log('定时器触发');
+    }, 180000);
+  },
         getClueTrend() {
       this.$http.get(CGI.overviewOfOnlineAndOfflineOrders, null, false).then((res1) => {
           if (res1 && res1.data) {
@@ -196,7 +207,7 @@ export default {
             margin: 15,
             textStyle: {
               color: "#BBCDD7",
-              fontSize: 16,
+              fontSize: 12,
             },
           },
           minInterval: 5,

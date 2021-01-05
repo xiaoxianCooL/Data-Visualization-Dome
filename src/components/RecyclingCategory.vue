@@ -8,7 +8,7 @@
 -->
 <template>
 <div class='RecyclingCategory'>
-    <div class="recyclingCategory" ref="recyclingCategory" style="height:210px;width:530px"></div>
+    <div class="recyclingCategory" ref="recyclingCategory" style="height:260px;width:530px"></div>
 </div>
 </template>
 
@@ -23,7 +23,7 @@ components: {},
 data() {
 //这里存放数据
 return {
-
+updateWeatherTimer:null
 };
 },
 //监听属性 类似于data概念
@@ -37,10 +37,19 @@ created() {
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
-this.getRecyclingCategory();
+    this.getRecyclingCategory();
+    this.updateDataByTimer();
 },
 //方法集合
 methods: {
+    updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getRecyclingCategory();
+    }, 180000);
+  },
     getRecyclingCategory() {
       this.$http.get(CGI.categoryAnalysis, null, false).then(res => {
         if (res && res.data) {
@@ -86,7 +95,7 @@ var placeHolderStyle = {
     }
 };
 var data = [];
-var color=['#ffa800','#ff5b00','#ff3000','#0dbc79','#9933CC','#FF33FF','#FFFF00','#FF9900','#00ffff','#00cfff','#006ced','#ffe000','#0000FF','#CC99FF','#006600','#2ee5ce','#00ff00']//环的颜色
+var color=['#ffa800','#ff5b00','#ff3000','#0dbc79','#9933CC','#FF33FF','#FFFF00','#FF9900','#00ffff','#00cfff','#006ced','#ffe000','#0000FF','#CC99FF','#006600','#2ee5ce','#00ff00','#9933CC','#FF33FF','#FFFF00','#FF9900','#00ffff']//环的颜色
 for (var i = 0; i < dataList.length; i++) {
     data.push({
         value: dataList[i].sum_numerical_value,

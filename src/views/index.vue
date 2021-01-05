@@ -211,6 +211,7 @@ export default {
           ],
         },
       ],
+      updateWeatherTimer:null
     };
   },
   //监听属性 类似于data概念
@@ -231,13 +232,25 @@ export default {
       this.updateTime();
     }, 1000);
     this.getStatisticalData(); //全国门店各项数据统计
+    this.updateDataByTimer();
+
     //绑定resize事件 监听浏览器是否缩小 触发自适应函数随着视图缩小计算比例
     window.addEventListener("resize", this.handleResize);
     this.handleResize(); //视图自适应函数
+    
   },
   //方法集合
   methods: {
-
+    updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getEchartData(); //初始化加载地图函数
+      this.getWeatherData(); //获取天气数据
+      this.getStatisticalData(); //全国门店各项数据统计
+    }, 180000);
+  },
     //获取主表统计数据
     getStatisticalData() {
       this.$http
@@ -252,7 +265,7 @@ export default {
               if (StatisticalData.length == "1") {
                 this.deviceUnlineChangeNum = "00" + StatisticalData;
               } else if (StatisticalData.length == "2") {
-                this.deviceUnlineChangeNum = "10" + StatisticalData;
+                this.deviceUnlineChangeNum = "0" + StatisticalData;
               } else if (StatisticalData.length == "3") {
                 this.deviceUnlineChangeNum = StatisticalData;
               } else {
@@ -571,7 +584,12 @@ export default {
                     return params.name;
                   }else if(params.componentSubType =="effectScatter" && params.data){
                     console.log(params);
-                      return params.data.startProvince + " --> " + params.data.endProvince+"<br/>"+"城市:"+params.data.city[0].name+"&nbsp;&nbsp;&nbsp;数量:"+params.data.city[0].count;
+                    var cityArr = params.data.city;
+                    var str = params.data.startProvince + " --> " + params.data.endProvince+"<br/>"
+                    for(var i =0;i<cityArr.length;i++){
+                      str += "城市:"+cityArr[i].name+"&nbsp;&nbsp;&nbsp;数量:"+cityArr[i].count+"<br/>";
+                    }
+                      return str;
                       // return params.name;
                   }
                 },
@@ -850,8 +868,8 @@ export default {
 .map-page-con {
   position: relative;
   width: 1920px;
-  // height: 1080px;
-  height: 100vh;
+  height: 1080px;
+  // height: 100vh;
   transform-origin: left top;
   overflow: auto;
   font-family: "SourceHanSansSc-Regular", "Helvetica Neue", Helvetica,
@@ -928,7 +946,7 @@ export default {
     height: 100%;
     top: 0;
     left: 0;
-    padding: 120px 20px 20px;
+    padding: 140px 20px 20px;
     font-size: 0;
     display: flex;
     .main-item-left {
@@ -939,17 +957,17 @@ export default {
       // background-color: cornflowerblue;
       .main-item-left-min {
         background: url("../assets/image/min.png") no-repeat;
-        height: 200px;
+        height: 230px;
         background-size: 100% 100%;
       }
       .main-item-left-middle {
         background: url("../assets/image/cen.png") no-repeat;
-        height: 250px;
+        height: 300px;
         background-size: 100% 100%;
       }
       .main-item-left-max {
         background: url("../assets/image/max.png") no-repeat;
-        height: 327px;
+        height: 377px;
         background-size: 100% 100%;
       }
     }
@@ -972,20 +990,21 @@ export default {
         }
       }
       .main-item-center-map {
+        margin-top: 50px;
         // 地图样式
         width: 728px;
         height: 550px;
       }
       .main-item-center-botton {
-        margin-top: 46px;
+        margin-top: 77px;
         background: url("../assets/image/center.png") no-repeat;
-        height: 150px;
+        height: 200px;
         background-size: 100% 100%;
       }
       .main-item-common-row {
         // border-color: ;
         // display: inline-block;
-        margin: 12px;
+        margin:35px 12px 12px 12px;
         .row-div {
           display: inline-block;
           width: 18.9%;
@@ -1025,24 +1044,24 @@ export default {
       // background-color: cornflowerblue;
       .main-item-right-min {
         background: url("../assets/image/min.png") no-repeat;
-        height: 200px;
+        height: 230px;
         background-size: 100% 100%;
       }
       .main-item-right-middle {
         background: url("../assets/image/cen.png") no-repeat;
-        height: 200px;
+        height: 250px;
         background-size: 100% 100%;
       }
       .main-item-right-max {
         background: url("../assets/image/max.png") no-repeat;
-        height: 377px;
+        height: 427px;
         background-size: 100% 100%;
         .down {
           margin-top: 30px;
           background-color: rgba(10, 10, 13, 0.72);
           padding: 20px;
           // visibility: hidden;
-          height: 305px;
+          height: 355px;
         }
       }
     }

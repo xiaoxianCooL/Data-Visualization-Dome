@@ -8,7 +8,7 @@
 -->
 <template>
 <div class='Tanking'>
-    <div ref="tanking" style="height: 300px; width: 530px"></div>
+    <div ref="tanking" style="height: 350px; width: 530px"></div>
 </div>
 </template>
 
@@ -22,7 +22,7 @@ components: {},
 data() {
 //这里存放数据
 return {
-
+updateWeatherTimer:null
 };
 },
 //监听属性 类似于data概念
@@ -37,16 +37,30 @@ created() {
 mounted() {
 
     this.getTanking();
+
+   this.updateDataByTimer();
 },
 //方法集合
 methods: {
+      updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getTanking();
+    }, 180000);
+  },
     getTanking(){
       this.$http.get(CGI.rankingList, null, false).then((res) => {
           if (res && res.data) {
             let data = res.data;
             console.log("----------门店回收费用排行榜-------------");
             console.log(data)
-            this.infoTanking(data.rows);
+            let rows =[];
+            for(let i =0;i<8;i++){
+              rows.push(data.rows[i])
+            }
+            this.infoTanking(rows);
           }
         }).catch((err) => {
           console.log(err);
@@ -175,7 +189,7 @@ methods: {
       var attaName = [];
       var topName = [];
       data.forEach((it, index) => {
-        attaData[index] = parseFloat(it.sum_money).toFixed(0);
+        attaData[index] = parseFloat(it.sum_money).toFixed(2);
         //attaData[index] = parseInt(it.num);
         attaName[index] = it.shop_name;
         topName[index] = `${it.shop_name}`;
@@ -227,9 +241,9 @@ methods: {
           data: ["个人所得(亿元)"],
         },
         grid: {
-          left: "0%",
+          left: "-20%",
           right: "2%",
-          width: "90%",
+          width: "120%",
           bottom: "2%",
           top: "8%",
           containLabel: true,

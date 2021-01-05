@@ -43,7 +43,8 @@ export default {
 //import引入的组件需要注入到对象中才能使用
 components: {
         Swiper,
-    SwiperSlide
+    SwiperSlide,
+updateWeatherTimer:null
 },
 data() {
 //这里存放数据
@@ -97,13 +98,22 @@ watch: {},
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
 
-this.getGardenList();
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
+  this.getGardenList();
+  this.updateDataByTimer();
 },
 //方法集合
 methods: {
+    updateDataByTimer() {
+    if (this.updateWeatherTimer) {
+      clearInterval(this.updateWeatherTimer);
+    }
+    this.updateWeatherTimer = setInterval(() => {
+      this.getGardenList();
+    }, 180000);
+  },
    getGardenList() {
     this.$http.get(CGI.realTimeOrder, {}).then((res) => {
       if (res && res.data && res.status ==200) {
