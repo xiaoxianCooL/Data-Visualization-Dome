@@ -132,17 +132,30 @@ var color =['#00f15a','#0696f9','#dcf776'];
         
 var option = {
     backgroundColor: '',
-     grid: {
+        grid: {
                 // left: '5%',
                 // top: '5%',
                 // bottom: '5%',
                 // right: '5%',
-            left: 10.5,
-          right: 18,
-          top: 18,
-          bottom: 10.5,
+        left: "10.5px",
+          right: "18px",
+          top: "18px",
+          bottom: "10.5px",
           containLabel: true
             },
+        tooltip : {
+          trigger: 'axis',
+        //   axisPointer: {
+        //     type: 'cross',
+        //     label: {
+        //     backgroundColor: '#6a7985'
+        //     }
+        //   },
+        //   formatter: function(params){
+        //       console.log(params);
+        //     return params[0].axisValueLabel+" <br/>"+params[0].seriesName+ ":" +params[0].value+" <br/>"+params[1].seriesName+ ":" +params[1].value+" <br/>"+params[2].seriesName+ ":" +params[2].value;
+        //   }
+        }, 
              legend: {
                 type: "scroll",
                 data:Line,
@@ -153,6 +166,7 @@ var option = {
                      fontSize:14
                  },
              },
+
             yAxis: [
                 {
                     type: 'value',

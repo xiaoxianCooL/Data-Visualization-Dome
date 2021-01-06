@@ -165,6 +165,19 @@ export default {
           bottom: "4px",
           containLabel: true,
         },
+        tooltip : {
+          trigger: 'axis',
+          // trigger: 'item',
+          // axisPointer: {
+          //   type: 'cross',
+          //   label: {
+          //   backgroundColor: '#6a7985'
+          //   }
+          // },
+          // formatter: function(params){
+          //   return params.seriesName+" <br/>"+params.name+ ":" +params.value;
+          // }
+        }, 
         xAxis: {
           type: "category",
           data: this.monthList,
@@ -322,7 +335,7 @@ export default {
     .trend_content {
       margin-top: 15px;
       // background-color: rgba($color: #0a0a0d, $alpha: 0.72);
-      background-color: rgba(10, 10, 13, 0.72);
+      // background-color: rgba(10, 10, 13, 0.72);
     }
   }
 }

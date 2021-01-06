@@ -8,7 +8,7 @@
 -->
 <template>
 <div class='RecyclingCategory'>
-    <div class="recyclingCategory" ref="recyclingCategory" style="height:260px;width:530px"></div>
+    <div class="recyclingCategory" ref="recyclingCategory" style="height:230px;width:530px"></div>
 </div>
 </template>
 

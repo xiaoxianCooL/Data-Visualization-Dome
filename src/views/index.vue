@@ -946,7 +946,7 @@ export default {
     height: 100%;
     top: 0;
     left: 0;
-    padding: 140px 20px 20px;
+    padding: 120px 20px 20px;
     font-size: 0;
     display: flex;
     .main-item-left {
@@ -962,7 +962,7 @@ export default {
       }
       .main-item-left-middle {
         background: url("../assets/image/cen.png") no-repeat;
-        height: 300px;
+        height: 270px;
         background-size: 100% 100%;
       }
       .main-item-left-max {
@@ -996,7 +996,7 @@ export default {
         height: 550px;
       }
       .main-item-center-botton {
-        margin-top: 77px;
+        margin-top: 47px;
         background: url("../assets/image/center.png") no-repeat;
         height: 200px;
         background-size: 100% 100%;
@@ -1054,11 +1054,11 @@ export default {
       }
       .main-item-right-max {
         background: url("../assets/image/max.png") no-repeat;
-        height: 427px;
+        height: 397px;
         background-size: 100% 100%;
         .down {
-          margin-top: 30px;
-          background-color: rgba(10, 10, 13, 0.72);
+          margin-top: 5px;
+          // background-color: rgba(10, 10, 13, 0.72);
           padding: 20px;
           // visibility: hidden;
           height: 355px;
