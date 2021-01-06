@@ -35,7 +35,8 @@ export default {
       orderNumberList: [],
       monthList: [],
       intentionRatio: {}, // 意向百分比
-      updateWeatherTimer:null
+      updateWeatherTimer:null,
+      Line : ["线上订单","线下订单"],//;labe
     };
   },
 
@@ -72,6 +73,7 @@ export default {
             this.monthList = res.model.map((i) => {
               return i.moneth_date + '月';
             });
+
             this.initTrendLine();
           }
         }).catch((err) => {
@@ -157,6 +159,26 @@ export default {
     },
     initTrendLine() {
       const myChart = echarts.init(this.$refs.trendLine);
+      //数据处理
+        // var datas = [];
+        // this.Line.map((item,index)=>{
+        //     datas.push(
+        //         {
+        //             symbolSize: 150,
+        //             symbol: img[index],
+        //             name: item,
+        //             type: "line",
+        //             yAxisIndex: 1,
+        //             data: this.dataArr[index] ,
+        //             itemStyle: {
+        //                 normal: {
+        //                     borderWidth: 5,
+        //                     color: color[index],
+        //                 }
+        //             }
+        //         }
+        //     )
+        // })
       myChart.setOption({
         grid: {
           left: "15px",
@@ -164,6 +186,16 @@ export default {
           top: "20px",
           bottom: "4px",
           containLabel: true,
+        },
+        legend: {
+          type: "scroll",
+          data:this.Line,
+          itemWidth:18,
+          itemHeight:12,
+          textStyle: {
+             color:"#00ffff",
+              fontSize:14
+          },
         },
         tooltip : {
           trigger: 'axis',
